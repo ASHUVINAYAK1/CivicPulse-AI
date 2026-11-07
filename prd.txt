@@ -1,0 +1,1764 @@
+# CivicPulse AI
+## Final Product Requirements, Technical Architecture & Engineering Blueprint
+
+**Version:** 2.0 — Finalized Technical Specification  
+**Project Type:** Advanced AI/ML Capstone  
+**Domain:** Urban Road Infrastructure  
+**Deployment:** Local-first  
+**Architecture:** Modular Full-Stack Application + Python ML Services  
+**Frontend:** Next.js, React, TypeScript  
+**Backend:** Node.js, Express  
+**ML Services:** Python, FastAPI  
+**Database:** PostgreSQL + PostGIS  
+**Object Storage:** MinIO (local S3-compatible storage)  
+**Containerization:** Docker Compose
+
+---
+
+# 1. Final Product Definition
+
+## 1.1 Product vision
+
+CivicPulse AI is an intelligent road infrastructure monitoring and predictive maintenance platform that transforms road damage reports, photographs, geographical information and historical maintenance records into actionable infrastructure intelligence.
+
+The platform enables citizens and field inspectors to report road damage, uses computer vision to detect and classify damage, evaluates its potential severity, identifies geographical damage hotspots and recommends maintenance priorities.
+
+Municipal administrators can manage incidents, assign repair teams, monitor maintenance activities and analyze historical and predicted road infrastructure conditions.
+
+## 1.2 Problem statement
+
+Municipal authorities often depend on manual inspections and unstructured complaints to identify road damage.
+
+These processes create operational inefficiencies:
+
+- Road damage may remain undetected for extended periods.
+- Similar complaints may be registered multiple times.
+- Maintenance priorities may be inconsistent.
+- Infrastructure deterioration is difficult to track geographically.
+- Historical maintenance information is not always converted into useful predictions.
+- Authorities lack a consolidated view of infrastructure conditions.
+
+CivicPulse AI addresses these problems by providing a centralized, AI-assisted road infrastructure monitoring and maintenance management system.
+
+## 1.3 Product objectives
+
+1. Automate road damage identification from photographs.
+2. Classify road damage into meaningful categories.
+3. Estimate preliminary damage severity.
+4. Identify duplicate and geographically related incidents.
+5. Discover road damage hotspots using clustering.
+6. Predict maintenance urgency using structured ML models.
+7. Forecast future incident volumes using time-series models.
+8. Manage the complete maintenance lifecycle.
+9. Provide explainable analytics to municipal administrators.
+10. Maintain traceability of predictions, human verification and model versions.
+
+## 1.4 Product scope
+
+**Included in the initial release:**
+
+- Road damage and pothole reporting.
+- Image classification.
+- Damage severity assessment.
+- Duplicate incident detection.
+- Incident prioritization.
+- Geographical mapping.
+- K-Means clustering.
+- Predictive analytics.
+- Maintenance task management.
+- Administrative dashboards.
+- Model evaluation and monitoring.
+
+**Excluded from the initial release:**
+
+- Other infrastructure categories such as drainage and streetlights.
+- Autonomous repair authorization.
+- Direct integration with municipal government systems.
+- Automated traffic control.
+- Physical road measurement without calibrated imagery.
+- Mobile application distribution.
+
+The frontend will be responsive so that citizens and inspectors can use it on mobile browsers.
+
+---
+
+# 2. User Roles and Permissions
+
+The application will support five roles.
+
+| Feature | Citizen | Inspector | Administrator | Maintenance Team | ML Admin |
+|---|---|---|---|---|---|
+| Submit incident | Yes | Yes | Yes | Yes | Yes |
+| Upload images | Yes | Yes | Yes | Yes | Yes |
+| View own reports | Yes | Yes | Yes | Yes | Yes |
+| View all incidents | No | Assigned | Yes | Assigned | Yes |
+| Verify AI results | No | Yes | Yes | No | Yes |
+| Change severity | No | Yes | Yes | No | No |
+| Assign maintenance | No | No | Yes | No | No |
+| Update repair status | No | No | Yes | Yes | No |
+| View analytics | Limited | Limited | Yes | Limited | Yes |
+| Manage ML models | No | No | No | No | Yes |
+| Manage users | No | No | Yes | No | Yes |
+
+Role-based authorization must be enforced on the backend, not merely by hiding frontend components.
+
+---
+
+# 3. Detailed Technical Architecture
+
+## 3.1 Architecture overview
+
+CivicPulse will use a modular architecture with separate application and ML services.
+
+```text
+                    USERS
+                       |
+             Next.js Web Application
+                       |
+                 Express API
+                       |
+             Authentication / RBAC
+                       |
+          +------------+-------------+
+          |            |             |
+     Incident       Maintenance    Analytics
+     Service         Service       Service
+          |            |             |
+          +------------+-------------+
+                       |
+                  PostgreSQL
+                    PostGIS
+                       |
+              +--------+--------+
+              |                 |
+          MinIO Storage     Redis Queue
+              |                 |
+              |             Background
+              |               Worker
+              |                 |
+              +--------+--------+
+                       |
+                 Python FastAPI
+                  ML Services
+                       |
+        +--------------+--------------+
+        |              |              |
+    Computer       Classical       Forecasting
+     Vision          ML              Models
+        |              |              |
+        +--------------+--------------+
+                       |
+                Model Registry
+                  (MLflow)
+```
+
+## 3.2 Architectural components
+
+### A. Frontend — Next.js
+
+Responsibilities:
+
+- User authentication interfaces.
+- Citizen incident reporting.
+- Image uploads.
+- Incident tracking.
+- Inspector verification screens.
+- Maintenance management.
+- Geographical dashboards.
+- ML analytics and visualizations.
+
+Recommended libraries:
+
+| Library | Purpose |
+|---|---|
+| Next.js | Application framework |
+| TypeScript | Type safety |
+| Tailwind CSS | Styling |
+| shadcn/ui | UI components |
+| React Query / TanStack Query | Server-state management |
+| React Hook Form | Form management |
+| Zod | Input validation |
+| Recharts | Analytics visualizations |
+| Leaflet | Geographical maps |
+| Zustand | Lightweight client state |
+
+### B. Application backend — Node.js and Express
+
+The Node.js backend will manage business operations.
+
+Responsibilities:
+
+- Authentication.
+- Authorization.
+- Incident creation and updates.
+- Image upload orchestration.
+- Maintenance assignment.
+- User management.
+- Notifications.
+- Audit logging.
+- Analytics aggregation.
+
+It will communicate with the Python ML service through HTTP APIs.
+
+### C. ML backend — Python and FastAPI
+
+The Python service will own all machine learning operations.
+
+Responsibilities:
+
+- Image preprocessing.
+- Damage classification.
+- Severity inference.
+- Duplicate similarity scoring.
+- Structured ML predictions.
+- K-Means clustering.
+- PCA.
+- Time-series forecasting.
+- Model evaluation.
+- Model version management.
+
+Keep training pipelines separate from real-time inference endpoints.
+
+### D. Database — PostgreSQL and PostGIS
+
+PostgreSQL will store:
+
+- Users.
+- Incidents.
+- Geographical coordinates.
+- Predictions.
+- Maintenance records.
+- Verification history.
+- Model metadata.
+- Audit events.
+
+PostGIS will support:
+
+- Geographic distance queries.
+- Nearby incident searches.
+- Geographical clustering preparation.
+- Spatial filtering.
+- Map visualization.
+
+### E. MinIO
+
+MinIO will store:
+
+- Original photographs.
+- Processed images.
+- Before-and-after repair photographs.
+- Model artifacts, where appropriate.
+
+The database will store object references rather than image binary data.
+
+### F. Redis and background processing
+
+Redis will support background task coordination.
+
+Use it for:
+
+- Image analysis jobs.
+- Duplicate detection jobs.
+- Forecast generation.
+- Scheduled analytics.
+- Notification processing.
+
+A Python Celery worker can execute asynchronous ML jobs.
+
+### G. MLflow
+
+MLflow will be used for experiment tracking.
+
+It should record:
+
+- Model parameters.
+- Training dataset version.
+- Evaluation metrics.
+- Experiment identifiers.
+- Model artifacts.
+- Model versions.
+
+---
+
+# 4. Local Development and Deployment Architecture
+
+The initial application will run locally using Docker Compose.
+
+## 4.1 Services
+
+| Service | Container | Local port |
+|---|---|---:|
+| Frontend | civicpulse-web | 3000 |
+| Express backend | civicpulse-api | 5000 |
+| FastAPI ML service | civicpulse-ml | 8000 |
+| PostgreSQL | civicpulse-db | 5432 |
+| Redis | civicpulse-redis | 6379 |
+| MinIO API | civicpulse-storage | 9000 |
+| MinIO Console | civicpulse-storage-console | 9001 |
+| MLflow | civicpulse-mlflow | 5001 |
+
+Ports are proposed defaults and can be changed if occupied.
+
+## 4.2 Local execution
+
+The expected startup command will be:
+
+```bash
+docker compose up --build
+```
+
+The user-facing application will be available at:
+
+```text
+http://localhost:3000
+```
+
+Backend API:
+
+```text
+http://localhost:5000
+```
+
+ML API documentation:
+
+```text
+http://localhost:8000/docs
+```
+
+MLflow:
+
+```text
+http://localhost:5001
+```
+
+MinIO Console:
+
+```text
+http://localhost:9001
+```
+
+PostgreSQL and Redis should not be exposed publicly in the production configuration.
+
+## 4.3 Local hardware considerations
+
+Deep learning training can be resource-intensive.
+
+Recommended development approach:
+
+- Use CPU for initial development and classical ML.
+- Use GPU acceleration when available for CNN experiments.
+- Use smaller image batches when GPU memory is limited.
+- Keep image inference separate from model training.
+- Allow long-running training experiments to execute independently of the web application.
+
+The system should remain usable even when no GPU is available.
+
+---
+
+# 5. Database Design
+
+The database will use a relational schema with PostGIS support.
+
+## 5.1 Entity relationships
+
+```text
+USERS
+  |
+  | 1:N
+  |
+INCIDENTS -------- INCIDENT_IMAGES
+  |
+  | 1:N
+  |
+AI_PREDICTIONS
+  |
+  | 1:N
+  |
+INCIDENT_VERIFICATIONS
+
+INCIDENTS
+  |
+  | 1:N
+  |
+MAINTENANCE_TASKS
+  |
+  | 1:N
+  |
+MAINTENANCE_UPDATES
+
+USERS -------- MAINTENANCE_TASKS
+  |
+  | 1:N
+  |
+AUDIT_LOGS
+
+MODEL_REGISTRY
+  |
+  | 1:N
+  |
+AI_PREDICTIONS
+```
+
+## 5.2 Table specifications
+
+### Table 1: users
+
+Stores application users.
+
+| Column | Type | Description |
+|---|---|---|
+| id | UUID | Primary key |
+| full_name | VARCHAR(150) | User name |
+| email | VARCHAR(255) | Unique email |
+| password_hash | TEXT | Hashed password |
+| role | ENUM | User role |
+| is_active | BOOLEAN | Account status |
+| created_at | TIMESTAMP | Creation time |
+| updated_at | TIMESTAMP | Update time |
+
+### Table 2: incidents
+
+Stores road damage reports.
+
+| Column | Type | Description |
+|---|---|---|
+| id | UUID | Primary key |
+| incident_number | VARCHAR(30) | Human-readable identifier |
+| reporter_id | UUID | Foreign key to users |
+| title | VARCHAR(200) | Incident title |
+| description | TEXT | User description |
+| damage_type | VARCHAR(50) | Damage category |
+| severity | VARCHAR(30) | Verified severity |
+| status | VARCHAR(40) | Workflow status |
+| priority | VARCHAR(20) | Maintenance priority |
+| latitude | DECIMAL(10,7) | Latitude |
+| longitude | DECIMAL(10,7) | Longitude |
+| location | GEOGRAPHY(Point,4326) | PostGIS point |
+| address | TEXT | Resolved address |
+| reported_at | TIMESTAMP | Report time |
+| verified_at | TIMESTAMP | Verification time |
+| created_at | TIMESTAMP | Creation time |
+| updated_at | TIMESTAMP | Last update |
+
+### Table 3: incident_images
+
+Stores image references.
+
+| Column | Type | Description |
+|---|---|---|
+| id | UUID | Primary key |
+| incident_id | UUID | Incident foreign key |
+| storage_key | TEXT | MinIO object key |
+| original_filename | TEXT | Uploaded filename |
+| content_type | VARCHAR(100) | Image MIME type |
+| file_size | BIGINT | File size |
+| image_type | VARCHAR(30) | Report / before / after |
+| uploaded_at | TIMESTAMP | Upload time |
+
+### Table 4: ai_predictions
+
+Stores model predictions.
+
+| Column | Type | Description |
+|---|---|---|
+| id | UUID | Primary key |
+| incident_id | UUID | Incident foreign key |
+| model_version_id | UUID | Model version |
+| prediction_type | VARCHAR(50) | Classification, severity, etc. |
+| predicted_class | VARCHAR(100) | Predicted category |
+| confidence | FLOAT | Prediction confidence |
+| prediction_payload | JSONB | Additional results |
+| processing_time_ms | INTEGER | Inference time |
+| created_at | TIMESTAMP | Prediction time |
+
+### Table 5: incident_verifications
+
+Stores human verification results.
+
+| Column | Type | Description |
+|---|---|---|
+| id | UUID | Primary key |
+| incident_id | UUID | Incident reference |
+| inspector_id | UUID | Verifying user |
+| predicted_class | VARCHAR(100) | AI result |
+| verified_class | VARCHAR(100) | Human-confirmed class |
+| predicted_severity | VARCHAR(30) | AI severity |
+| verified_severity | VARCHAR(30) | Human severity |
+| remarks | TEXT | Inspector remarks |
+| verified_at | TIMESTAMP | Verification time |
+
+### Table 6: maintenance_tasks
+
+Stores repair assignments.
+
+| Column | Type | Description |
+|---|---|---|
+| id | UUID | Primary key |
+| incident_id | UUID | Associated incident |
+| assigned_to | UUID | Maintenance team user |
+| assigned_by | UUID | Administrator |
+| task_status | VARCHAR(40) | Task status |
+| priority | VARCHAR(20) | Priority |
+| estimated_cost | DECIMAL(12,2) | Estimated cost |
+| actual_cost | DECIMAL(12,2) | Actual cost |
+| estimated_duration | INTEGER | Estimated hours |
+| actual_duration | INTEGER | Actual hours |
+| started_at | TIMESTAMP | Work start |
+| completed_at | TIMESTAMP | Completion |
+| created_at | TIMESTAMP | Creation time |
+
+### Table 7: maintenance_updates
+
+Stores repair progress.
+
+| Column | Type | Description |
+|---|---|---|
+| id | UUID | Primary key |
+| task_id | UUID | Maintenance task |
+| updated_by | UUID | User |
+| previous_status | VARCHAR(40) | Previous state |
+| new_status | VARCHAR(40) | New state |
+| remarks | TEXT | Progress information |
+| image_id | UUID | Optional repair image |
+| created_at | TIMESTAMP | Update time |
+
+### Table 8: model_registry
+
+Stores ML model information.
+
+| Column | Type | Description |
+|---|---|---|
+| id | UUID | Primary key |
+| model_name | VARCHAR(150) | Model name |
+| model_type | VARCHAR(50) | Classification/regression |
+| version | VARCHAR(50) | Model version |
+| framework | VARCHAR(50) | Framework |
+| artifact_uri | TEXT | Model artifact |
+| metrics | JSONB | Evaluation metrics |
+| training_dataset | VARCHAR(200) | Dataset version |
+| status | VARCHAR(30) | Experimental/staging/production |
+| created_at | TIMESTAMP | Registration time |
+
+### Table 9: audit_logs
+
+Stores important application actions.
+
+| Column | Type | Description |
+|---|---|---|
+| id | UUID | Primary key |
+| user_id | UUID | Acting user |
+| entity_type | VARCHAR(100) | Entity affected |
+| entity_id | UUID | Entity identifier |
+| action | VARCHAR(100) | Operation |
+| metadata | JSONB | Action details |
+| created_at | TIMESTAMP | Event time |
+
+### Table 10: incident_forecasts
+
+Stores regional forecasting results.
+
+| Column | Type | Description |
+|---|---|---|
+| id | UUID | Primary key |
+| region_id | VARCHAR(100) | Region identifier |
+| model_version_id | UUID | Forecast model |
+| forecast_period | DATE | Forecast date |
+| predicted_incidents | FLOAT | Predicted count |
+| lower_bound | FLOAT | Lower uncertainty bound |
+| upper_bound | FLOAT | Upper uncertainty bound |
+| generated_at | TIMESTAMP | Generation time |
+
+### Additional database requirements
+
+- Use UUIDs for primary identifiers.
+- Add indexes on frequently filtered fields.
+- Add a GiST spatial index on geographical coordinates.
+- Use database transactions for important workflow changes.
+- Preserve historical prediction records.
+- Do not overwrite previous verification records.
+- Store all timestamps in UTC.
+- Maintain foreign-key constraints.
+- Apply retention policies to uploaded photographs.
+
+---
+
+# 6. Machine Learning Architecture
+
+The ML layer will be divided into five functional groups.
+
+## 6.1 Group A — Classical Supervised Learning
+
+| Algorithm | Business problem | Output |
+|---|---|---|
+| Linear Regression | Predict repair cost/duration | Numerical estimate |
+| Logistic Regression | Predict maintenance urgency | Probability |
+| SVM | Classify urgency/damage attributes | Class |
+| Decision Tree | Explain urgency classification | Class + decision path |
+| Random Forest | Predict maintenance priority | Class/probability |
+| Bagging | Improve regression stability | Averaged prediction |
+| AdaBoost | Improve classification performance | Class/probability |
+| Gradient Boosting | Predict repair cost/duration | Numerical estimate |
+
+### Model training workflow
+
+1. Collect structured incident records.
+2. Remove invalid entries.
+3. Handle missing values.
+4. Encode categorical variables.
+5. Scale features where required.
+6. Perform stratified or appropriate cross-validation.
+7. Train baseline models.
+8. Tune hyperparameters.
+9. Compare metrics.
+10. Register selected models.
+
+### Feature engineering
+
+Potential structured features:
+
+- Damage category.
+- Verified severity.
+- Incident age.
+- Number of nearby incidents.
+- Historical recurrence count.
+- Road classification, if available.
+- Traffic information, if available.
+- Region.
+- Historical repair cost.
+- Historical repair duration.
+
+Avoid using information that would only become available after the prediction is supposed to be made. For example, actual repair cost cannot be an input when predicting repair cost.
+
+## 6.2 Group B — Unsupervised Learning
+
+### K-Means
+
+Business objective: Discover geographically or operationally related road damage clusters.
+
+Features may include:
+
+- Latitude.
+- Longitude.
+- Incident frequency.
+- Damage distribution.
+- Verified severity.
+
+Implementation:
+- K-Means from scratch for the academic requirement.
+- Euclidean distance.
+- Centroid initialization.
+- Cluster assignment.
+- Centroid recalculation.
+- Convergence detection.
+- Elbow method.
+- SSE calculation.
+
+Important: Geographical distance should be calculated in a suitable projected coordinate system or with a geospatial distance metric. Raw latitude and longitude should not be treated as ordinary Euclidean coordinates for large geographical areas.
+
+### PCA
+
+Business objective: Reduce dimensionality of structured infrastructure features for analysis and visualization.
+
+Steps:
+1. Impute missing values.
+2. Standardize features.
+3. Calculate principal components.
+4. Analyze explained variance.
+5. Visualize in two dimensions.
+6. Compare downstream model performance if PCA features are used for prediction.
+
+## 6.3 Group C — Computer Vision
+
+### CNN image classification
+
+Initial target classes:
+
+- D00: Longitudinal crack.
+- D10: Transverse crack.
+- D20: Alligator crack.
+- D40: Pothole.
+
+Use a compatible road damage dataset, such as RDD2022, after reviewing its annotations and licensing.
+
+### Proposed CNN architecture
+
+```text
+Input Image
+    |
+Resize and Normalize
+    |
+Convolution Block 1
+    |
+ReLU + Max Pooling
+    |
+Convolution Block 2
+    |
+ReLU + Max Pooling
+    |
+Convolution Block 3
+    |
+ReLU + Max Pooling
+    |
+Global Average Pooling
+    |
+Dense Layer
+    |
+Dropout
+    |
+Softmax
+    |
+Damage Category
+```
+
+Use data augmentation such as:
+- Horizontal flipping, when appropriate.
+- Small rotations.
+- Brightness adjustments.
+- Random crops.
+
+Evaluation:
+- Macro precision.
+- Macro recall.
+- Macro F1.
+- Confusion matrix.
+- Per-class performance.
+
+### Transfer learning
+
+Compare at least two pretrained architectures:
+
+- MobileNetV2.
+- EfficientNetB0.
+- ResNet50.
+
+Recommended initial experiment:
+- Freeze the pretrained backbone.
+- Train a custom classification head.
+- Unfreeze selected layers.
+- Fine-tune with a lower learning rate.
+- Compare against the baseline CNN.
+
+For the final local inference service, prefer the model with the best balance of accuracy, inference latency and resource requirements.
+
+### Advanced extension: Object detection
+
+After image classification works, introduce an object detection model.
+
+Possible architecture:
+- YOLO family or another appropriately licensed detector.
+
+Output:
+- Bounding boxes.
+- Damage category.
+- Confidence.
+- Image coordinates.
+
+This is an advanced enhancement, not a dependency for the first release.
+
+## 6.4 Group D — Neural Networks
+
+### ANN
+
+Purpose:
+- Predict structured maintenance outcomes.
+- Learn non-linear relationships.
+
+Proposed architecture:
+
+```text
+Input Features
+     |
+Dense Layer (128)
+     |
+ReLU
+     |
+Dropout
+     |
+Dense Layer (64)
+     |
+ReLU
+     |
+Dense Layer (32)
+     |
+ReLU
+     |
+Output Layer
+```
+
+Choose output activation and loss based on the task:
+
+- Binary classification: sigmoid + binary cross-entropy.
+- Multiclass classification: softmax + categorical cross-entropy.
+- Regression: linear output + suitable regression loss.
+
+Training topics:
+- Backpropagation.
+- Gradient descent.
+- Adam.
+- Learning-rate scheduling.
+- L1/L2 regularization.
+- Dropout.
+- Early stopping.
+
+## 6.5 Group E — Time-Series Forecasting
+
+### RNN/LSTM
+
+Purpose:
+Predict future road incident volumes.
+
+Input:
+- Historical weekly or monthly incidents.
+- Regional incident trends.
+- Damage category distribution.
+
+Output:
+- Predicted number of future incidents.
+
+Proposed architecture:
+
+```text
+Historical Incident Sequences
+           |
+         LSTM
+           |
+      Dropout
+           |
+         LSTM
+           |
+       Dense Layer
+           |
+   Forecasted Incident Count
+```
+
+Evaluation:
+- MAE.
+- RMSE.
+- Forecast-versus-actual plot.
+- Comparison against naive and seasonal baselines.
+
+Use chronological train/validation/test splitting. Do not randomly shuffle time-series records across these sets.
+
+---
+
+# 7. Model-to-Product Mapping
+
+Not every experimental model needs to be exposed directly to end users.
+
+| Product feature | Primary model | Supporting algorithms |
+|---|---|---|
+| Road damage detection | CNN / Transfer Learning | OpenCV |
+| Damage severity | Validated structured classifier | Logistic Regression, SVM, Boosting |
+| Maintenance priority | Random Forest / Gradient Boosting | Decision Tree |
+| Cost estimation | Validated regression model | Linear Regression, Bagging |
+| Duration estimation | Validated regression model | Gradient Boosting |
+| Duplicate detection | Image/text similarity | Geographical matching |
+| Geographic hotspots | K-Means / spatial clustering | PCA |
+| Incident forecasting | LSTM | Baseline time-series models |
+
+The severity model must be trained using independently verified severity labels. Damage category alone does not establish actual safety risk.
+
+The priority engine should combine model output with configurable operational rules, and an authorized human must approve critical maintenance decisions.
+
+---
+
+# 8. API Specification
+
+Base URL:
+
+`http://localhost:5000/api/v1`
+
+ML service:
+
+`http://localhost:8000/api/v1`
+
+All protected endpoints require authentication.
+
+## 8.1 Authentication APIs
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | /auth/register | Register user |
+| POST | /auth/login | Authenticate user |
+| POST | /auth/logout | End session |
+| POST | /auth/refresh | Refresh token |
+| GET | /auth/me | Get current user |
+
+Example login request:
+
+```json
+{
+  "email": "admin@example.com",
+  "password": "example-password"
+}
+```
+
+## 8.2 Incident APIs
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | /incidents | Create incident |
+| GET | /incidents | List incidents |
+| GET | /incidents/:id | Get incident |
+| PATCH | /incidents/:id | Update incident |
+| DELETE | /incidents/:id | Soft-delete permitted records |
+| GET | /incidents/:id/history | View incident history |
+| GET | /incidents/nearby | Find nearby incidents |
+
+Example incident request:
+
+```json
+{
+  "title": "Large pothole near intersection",
+  "description": "Deep pothole affecting vehicles",
+  "latitude": 28.6139,
+  "longitude": 77.2090
+}
+```
+
+The example coordinates are illustrative, not a real reported incident.
+
+## 8.3 Image APIs
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | /incidents/:id/images | Upload photograph |
+| GET | /incidents/:id/images | List images |
+| GET | /images/:id | Retrieve authorized image |
+| DELETE | /images/:id | Delete permitted image |
+
+Use multipart form-data for image uploads.
+
+Validate MIME type, file size and image content before storage.
+
+## 8.4 AI inference APIs
+
+These belong to the Python ML service.
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | /ml/damage/classify | Classify damage image |
+| POST | /ml/damage/detect | Detect damage objects |
+| POST | /ml/severity/predict | Predict preliminary severity |
+| POST | /ml/priority/predict | Recommend maintenance priority |
+| POST | /ml/cost/predict | Estimate repair cost |
+| POST | /ml/duration/predict | Estimate repair duration |
+| POST | /ml/duplicates/check | Find similar incidents |
+| GET | /ml/models | List available models |
+| GET | /ml/models/:id | Model information |
+
+Example image classification response:
+
+```json
+{
+  "prediction_id": "uuid",
+  "model": "road-damage-classifier",
+  "version": "1.0.0",
+  "predicted_class": "pothole",
+  "confidence": 0.94,
+  "status": "completed"
+}
+```
+
+The confidence value is illustrative.
+
+## 8.5 Verification APIs
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | /incidents/:id/verify | Verify AI prediction |
+| GET | /incidents/:id/verifications | Verification history |
+| PATCH | /incidents/:id/severity | Update verified severity |
+| POST | /incidents/:id/reject | Reject invalid incident |
+
+## 8.6 Maintenance APIs
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | /maintenance/tasks | Create repair task |
+| GET | /maintenance/tasks | List tasks |
+| GET | /maintenance/tasks/:id | Task details |
+| PATCH | /maintenance/tasks/:id | Update task |
+| POST | /maintenance/tasks/:id/assign | Assign repair team |
+| POST | /maintenance/tasks/:id/start | Start work |
+| POST | /maintenance/tasks/:id/complete | Complete work |
+| POST | /maintenance/tasks/:id/updates | Add progress update |
+
+## 8.7 Analytics APIs
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | /analytics/overview | Dashboard KPIs |
+| GET | /analytics/damage-distribution | Damage categories |
+| GET | /analytics/severity-distribution | Severity breakdown |
+| GET | /analytics/trends | Historical trends |
+| GET | /analytics/hotspots | Geographical hotspots |
+| GET | /analytics/maintenance | Maintenance performance |
+| GET | /analytics/forecasts | Future forecasts |
+
+## 8.8 ML analytics APIs
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | /ml/clustering/run | Execute clustering |
+| GET | /ml/clustering/results | Retrieve cluster results |
+| POST | /ml/pca/analyze | Run PCA analysis |
+| POST | /ml/experiments | Start experiment |
+| GET | /ml/experiments | List experiments |
+| GET | /ml/experiments/:id | Experiment details |
+| GET | /ml/metrics | Model metrics |
+
+Long-running operations should return a job ID and be processed asynchronously.
+
+---
+
+# 9. Incident Processing Workflow
+
+This is the most important end-to-end application workflow.
+
+## 9.1 Citizen reporting
+
+1. User logs in.
+2. User opens Report Road Damage.
+3. User uploads a photograph.
+4. User selects or confirms the geographical location.
+5. User adds a description.
+6. Backend validates the request.
+7. Incident is created.
+8. Photograph is saved to MinIO.
+9. An asynchronous AI analysis job is created.
+
+## 9.2 AI analysis
+
+1. Worker retrieves the pending job.
+2. Image is downloaded from object storage.
+3. Image is validated and preprocessed.
+4. CNN predicts the damage category.
+5. Prediction confidence is recorded.
+6. Severity model generates a preliminary assessment, if available.
+7. Duplicate detection checks nearby reports.
+8. Priority engine calculates a recommendation.
+9. Prediction records are saved.
+10. Incident becomes available for inspector verification.
+
+## 9.3 Human verification
+
+1. Inspector opens the incident.
+2. Inspector views the original image.
+3. Inspector reviews AI predictions.
+4. Inspector confirms or corrects the damage category.
+5. Inspector selects the verified severity.
+6. System records verification history.
+7. Incident becomes eligible for maintenance prioritization.
+
+## 9.4 Maintenance workflow
+
+1. Administrator reviews the incident.
+2. Administrator approves its maintenance priority.
+3. Administrator assigns a team.
+4. Maintenance team receives the task.
+5. Team starts the repair.
+6. Team uploads progress photographs.
+7. Team records completion details.
+8. Administrator verifies the repair.
+9. Incident is closed.
+
+## 9.5 Analytics updates
+
+The system updates:
+
+- Total incident count.
+- Verified damage distribution.
+- Open maintenance cases.
+- Regional hotspot statistics.
+- Historical resolution metrics.
+- Forecasting input data.
+
+---
+
+# 10. Frontend Application Specification
+
+## 10.1 Application navigation
+
+### Public / Citizen
+
+- Home
+- Report Damage
+- My Reports
+- Incident Details
+- Profile
+
+### Inspector
+
+- Inspector Dashboard
+- Assigned Inspections
+- Incident Verification
+- Verification History
+
+### Administrator
+
+- Overview
+- Incidents
+- Road Damage Map
+- Hotspot Analysis
+- Predictive Maintenance
+- Maintenance Tasks
+- Teams
+- Reports
+- Model Analytics
+- User Management
+- Settings
+
+### ML Administrator
+
+- Model Registry
+- Experiments
+- Dataset Management
+- Evaluation Metrics
+- Model Versions
+- Inference Monitoring
+
+## 10.2 Dashboard KPI cards
+
+The administrator dashboard should initially include:
+
+- Total Reports.
+- Verified Incidents.
+- Critical Incidents.
+- Open Maintenance Tasks.
+- Completed Repairs.
+- Average Resolution Time.
+
+## 10.3 Important visualizations
+
+1. Road damage distribution — bar chart.
+2. Severity distribution — donut chart.
+3. Monthly reports — line chart.
+4. Geographical incident map — map with markers.
+5. Hotspot map — clustered regions.
+6. Maintenance progress — stacked bar chart.
+7. Model performance — evaluation dashboard.
+8. Forecasted incident volumes — time-series chart.
+
+Avoid showing synthetic and real records together without clear labels.
+
+---
+
+# 11. Data Engineering and Dataset Strategy
+
+## 11.1 Initial datasets
+
+### Road Damage Dataset (RDD2022)
+
+Use for image classification and object detection research.
+
+Repository:
+https://github.com/sekilab/RoadDamageDetector
+
+Review the dataset's license, annotation format and usage conditions before redistribution.
+
+### OpenStreetMap
+
+Use for:
+- Road network context.
+- Geographical visualization.
+- Road segment association.
+
+Website:
+https://www.openstreetmap.org/
+
+### Structured incident records
+
+Build a normalized dataset with:
+
+- Incident ID.
+- Damage type.
+- Severity.
+- Location.
+- Report date.
+- Verification outcome.
+- Maintenance status.
+- Repair cost.
+- Repair duration.
+
+Use actual records when legitimately available.
+
+For application demonstrations, generate synthetic records and explicitly mark them as synthetic.
+
+## 11.2 Data quality pipeline
+
+```text
+Raw Data
+   |
+Data Validation
+   |
+Duplicate Identification
+   |
+Missing Value Analysis
+   |
+Image Validation
+   |
+Feature Engineering
+   |
+Train / Validation / Test Split
+   |
+Model Training
+   |
+Model Evaluation
+   |
+Model Registration
+```
+
+Important rules:
+
+- Split datasets before fitting preprocessing transformations.
+- Prevent duplicate photographs from leaking between training and testing.
+- Use group-based splitting when multiple images come from the same road or inspection session.
+- Use chronological splitting for forecasts.
+- Preserve the original data and annotation provenance.
+
+---
+
+# 12. Model Evaluation and Acceptance Criteria
+
+The project must use separate evaluation criteria for different tasks.
+
+| Model type | Required metrics |
+|---|---|
+| Regression | MAE, RMSE, R² |
+| Binary classification | Precision, Recall, F1, ROC-AUC |
+| Multiclass classification | Macro F1, per-class recall |
+| Image classification | Macro F1, confusion matrix |
+| Object detection | mAP and IoU |
+| Clustering | SSE, Silhouette Score |
+| PCA | Explained variance |
+| Forecasting | MAE, RMSE, MAPE where appropriate |
+
+## Model acceptance policy
+
+A model cannot become a production model simply because it trained successfully.
+
+Each model must have:
+
+1. A documented dataset.
+2. A reproducible training procedure.
+3. A validation report.
+4. An independent test evaluation.
+5. A model artifact.
+6. A version identifier.
+7. A defined inference contract.
+8. Known limitations.
+
+For severity and priority prediction, recall on the critical class is particularly important.
+
+A model that misses serious incidents must not be considered successful merely because its overall accuracy is high.
+
+---
+
+# 13. Security and Reliability Requirements
+
+## Authentication
+
+- Password hashing using Argon2id or bcrypt.
+- Secure session or token management.
+- Role-based authorization.
+- Refresh-token rotation if token-based authentication is selected.
+
+## Image security
+
+- Validate image formats.
+- Limit upload sizes.
+- Reject malformed files.
+- Generate server-side object names.
+- Do not trust original filenames.
+- Restrict image access through authorized endpoints.
+
+## Application security
+
+- Validate all API inputs.
+- Use parameterized database queries.
+- Apply rate limits to sensitive endpoints.
+- Protect administrative APIs.
+- Store secrets in environment variables.
+- Keep database backups.
+- Record administrative changes.
+
+## Reliability
+
+- Background job retries.
+- Idempotent job handling.
+- Database transactions.
+- Model version traceability.
+- Graceful inference failure handling.
+- Health-check endpoints.
+
+---
+
+# 14. Project Repository Structure
+
+Recommended monorepo:
+
+```text
+civicpulse-ai/
+│
+├── apps/
+│   └── web/
+│       ├── app/
+│       ├── components/
+│       ├── features/
+│       │   ├── incidents/
+│       │   ├── dashboard/
+│       │   ├── maintenance/
+│       │   ├── analytics/
+│       │   └── authentication/
+│       ├── hooks/
+│       ├── lib/
+│       └── public/
+│
+├── services/
+│   ├── api/
+│   │   ├── src/
+│   │   │   ├── modules/
+│   │   │   │   ├── auth/
+│   │   │   │   ├── users/
+│   │   │   │   ├── incidents/
+│   │   │   │   ├── maintenance/
+│   │   │   │   ├── analytics/
+│   │   │   │   └── notifications/
+│   │   │   ├── middleware/
+│   │   │   ├── config/
+│   │   │   └── server.ts
+│   │   └── package.json
+│   │
+│   └── ml/
+│       ├── app/
+│       │   ├── api/
+│       │   ├── services/
+│       │   ├── schemas/
+│       │   ├── workers/
+│       │   └── main.py
+│       │
+│       ├── models/
+│       │   ├── classical/
+│       │   ├── clustering/
+│       │   ├── cnn/
+│       │   ├── transfer_learning/
+│       │   ├── ann/
+│       │   └── forecasting/
+│       │
+│       ├── training/
+│       ├── preprocessing/
+│       ├── evaluation/
+│       ├── experiments/
+│       ├── tests/
+│       └── requirements.txt
+│
+├── packages/
+│   ├── shared-types/
+│   └── api-contracts/
+│
+├── infrastructure/
+│   ├── docker/
+│   ├── postgres/
+│   ├── redis/
+│   ├── minio/
+│   └── monitoring/
+│
+├── datasets/
+│   ├── raw/
+│   ├── processed/
+│   ├── annotations/
+│   └── synthetic/
+│
+├── notebooks/
+│   ├── exploratory_analysis/
+│   ├── classical_ml/
+│   ├── clustering/
+│   ├── computer_vision/
+│   ├── deep_learning/
+│   └── forecasting/
+│
+├── docs/
+│   ├── PRD.md
+│   ├── ARCHITECTURE.md
+│   ├── DATABASE_SCHEMA.md
+│   ├── API_SPECIFICATION.md
+│   ├── ML_MODEL_CARD.md
+│   └── DEPLOYMENT.md
+│
+├── docker-compose.yml
+├── .env.example
+├── .gitignore
+└── README.md
+```
+
+Do not commit raw datasets, credentials, model checkpoints or uploaded citizen photographs to Git.
+
+---
+
+# 15. Development Backlog
+
+The following backlog is organized into epics, priorities, deliverables and acceptance criteria.
+
+Priority definitions:
+
+- P0: Essential for a functional product.
+- P1: Important for the advanced capstone.
+- P2: Enhancement after core functionality.
+
+## Epic 1 — Project Foundation
+
+**Priority:** P0
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-001 | Create monorepo | Repository structure |
+| CP-002 | Configure Next.js | Frontend running |
+| CP-003 | Configure Express | Backend running |
+| CP-004 | Configure FastAPI | ML service running |
+| CP-005 | Configure Docker Compose | Local infrastructure |
+| CP-006 | Configure PostgreSQL | Database connection |
+| CP-007 | Configure PostGIS | Spatial database |
+| CP-008 | Configure MinIO | Image storage |
+| CP-009 | Configure Redis | Background queue |
+| CP-010 | Configure environment variables | Secure local configuration |
+
+**Acceptance criteria:** All core services start locally and pass health checks.
+
+## Epic 2 — Authentication and Authorization
+
+**Priority:** P0
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-011 | Create user schema | User table |
+| CP-012 | Implement registration | Registration API |
+| CP-013 | Implement login | Login API |
+| CP-014 | Implement password hashing | Secure authentication |
+| CP-015 | Implement RBAC middleware | Authorization |
+| CP-016 | Create role-based dashboards | User interfaces |
+
+**Acceptance criteria:** Users can only access features authorized for their roles.
+
+## Epic 3 — Incident Reporting
+
+**Priority:** P0
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-017 | Create incident schema | Incident table |
+| CP-018 | Build reporting form | Citizen interface |
+| CP-019 | Implement image upload | Image API |
+| CP-020 | Integrate MinIO | Object storage |
+| CP-021 | Capture GPS coordinates | Geographical reporting |
+| CP-022 | Create incident details page | Incident tracking |
+| CP-023 | Implement incident filters | Search and filtering |
+| CP-024 | Implement incident history | Audit trail |
+
+**Acceptance criteria:** A citizen can submit an incident with an image and location, and retrieve its status.
+
+## Epic 4 — Data Preparation and ML Research
+
+**Priority:** P0
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-025 | Obtain road damage dataset | Raw dataset |
+| CP-026 | Review annotations and licenses | Dataset documentation |
+| CP-027 | Perform exploratory analysis | EDA notebook |
+| CP-028 | Create preprocessing pipeline | Reusable transformations |
+| CP-029 | Create structured incident dataset | Training dataset |
+| CP-030 | Create training/validation/test splits | Reproducible datasets |
+| CP-031 | Configure experiment tracking | MLflow |
+
+**Acceptance criteria:** Dataset provenance, feature definitions and split strategy are documented.
+
+## Epic 5 — Classical Machine Learning
+
+**Priority:** P1
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-032 | Implement Linear Regression | Regression baseline |
+| CP-033 | Implement Logistic Regression | Classification baseline |
+| CP-034 | Implement SVM | SVC experiment |
+| CP-035 | Implement Decision Tree | Tree model |
+| CP-036 | Implement Bagging | Bootstrap ensemble |
+| CP-037 | Implement Random Forest | Ensemble classifier |
+| CP-038 | Implement AdaBoost | Boosting experiment |
+| CP-039 | Implement Gradient Boosting | Boosting model |
+| CP-040 | Compare models | Evaluation report |
+| CP-041 | Tune hyperparameters | Optimized models |
+
+**Acceptance criteria:** All relevant models have reproducible experiments and comparable evaluation reports.
+
+## Epic 6 — Unsupervised Learning
+
+**Priority:** P1
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-042 | Implement K-Means from scratch | Clustering implementation |
+| CP-043 | Implement elbow method | SSE analysis |
+| CP-044 | Implement PCA | Dimensionality reduction |
+| CP-045 | Integrate PostGIS queries | Geospatial analytics |
+| CP-046 | Create hotspot visualization | Interactive map |
+| CP-047 | Interpret cluster results | Analytical report |
+
+**Acceptance criteria:** Clusters can be reproduced and displayed geographically with appropriate distance calculations.
+
+## Epic 7 — Computer Vision
+
+**Priority:** P0
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-048 | Create image preprocessing pipeline | Image pipeline |
+| CP-049 | Build baseline CNN | CNN model |
+| CP-050 | Train image classifier | Model artifact |
+| CP-051 | Evaluate per-class performance | Evaluation report |
+| CP-052 | Implement MobileNetV2 | Transfer learning |
+| CP-053 | Implement EfficientNetB0 | Transfer learning |
+| CP-054 | Compare architectures | Model comparison |
+| CP-055 | Implement inference endpoint | Classification API |
+| CP-056 | Store AI predictions | Prediction records |
+
+**Acceptance criteria:** An uploaded image can be analyzed, and the model prediction, confidence and version are recorded.
+
+## Epic 8 — Severity and Maintenance Intelligence
+
+**Priority:** P1
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-057 | Define severity annotation rules | Severity specification |
+| CP-058 | Build severity classifier | Severity model |
+| CP-059 | Create priority scoring engine | Priority service |
+| CP-060 | Implement duplicate matching | Duplicate service |
+| CP-061 | Create prediction explanations | Explanation interface |
+| CP-062 | Implement human verification | Inspector workflow |
+
+**Acceptance criteria:** AI results can be reviewed, corrected and incorporated into maintenance decisions.
+
+## Epic 9 — Neural Networks and Forecasting
+
+**Priority:** P1
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-063 | Implement ANN | Neural network |
+| CP-064 | Experiment with optimizers | Optimization report |
+| CP-065 | Apply regularization | Generalization analysis |
+| CP-066 | Build time-series dataset | Historical sequences |
+| CP-067 | Implement RNN/LSTM | Forecasting model |
+| CP-068 | Evaluate forecasts | Forecast report |
+| CP-069 | Create forecasting API | Forecast service |
+
+**Acceptance criteria:** The system can generate forecasts from suitable historical data and display evaluation results and uncertainty.
+
+## Epic 10 — Maintenance Management
+
+**Priority:** P0
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-070 | Create maintenance schema | Maintenance database |
+| CP-071 | Create assignment interface | Admin interface |
+| CP-072 | Implement team assignment | Assignment API |
+| CP-073 | Implement status updates | Workflow |
+| CP-074 | Upload repair evidence | Before/after images |
+| CP-075 | Record repair outcomes | Maintenance history |
+| CP-076 | Calculate resolution metrics | Performance analytics |
+
+**Acceptance criteria:** A verified incident can be assigned, repaired, reviewed and closed with an auditable history.
+
+## Epic 11 — Dashboards and Analytics
+
+**Priority:** P0
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-077 | Build administrator dashboard | KPI overview |
+| CP-078 | Build incident map | Geospatial UI |
+| CP-079 | Build damage distribution charts | Analytics |
+| CP-080 | Build severity charts | Analytics |
+| CP-081 | Build maintenance analytics | Performance dashboard |
+| CP-082 | Build forecasting dashboard | Predictive analytics |
+| CP-083 | Build model evaluation dashboard | ML analytics |
+
+**Acceptance criteria:** Dashboard metrics reflect database records and distinguish historical values from predictions.
+
+## Epic 12 — Testing, Deployment and Documentation
+
+**Priority:** P0
+
+| ID | Task | Deliverable |
+|---|---|---|
+| CP-084 | Backend unit tests | Test suite |
+| CP-085 | ML pipeline tests | ML tests |
+| CP-086 | Frontend tests | UI tests |
+| CP-087 | API integration tests | Integration suite |
+| CP-088 | End-to-end tests | Full workflow tests |
+| CP-089 | Configure logging | Observability |
+| CP-090 | Configure model monitoring | Model metrics |
+| CP-091 | Configure Docker deployment | Local deployment |
+| CP-092 | Write technical documentation | Project documentation |
+| CP-093 | Prepare final demo | Capstone presentation |
+
+**Acceptance criteria:** A new developer can start the complete application from the repository documentation and demonstrate the principal incident-to-maintenance workflow.
+
+---
+
+# 16. Suggested Development Schedule
+
+The following is a proposed 16-week plan.
+
+| Weeks | Focus | Main milestone |
+|---|---|---|
+| 1–2 | Architecture, setup, data | Foundation ready |
+| 3–4 | Authentication and reporting | Functional incident portal |
+| 5–6 | Classical ML and clustering | ML experimentation |
+| 7–9 | CNN and transfer learning | Damage classifier |
+| 10 | Severity and priority engine | Maintenance intelligence |
+| 11 | Forecasting | Predictive analytics |
+| 12–13 | Maintenance and dashboards | Integrated application |
+| 14 | Testing and optimization | Stable system |
+| 15 | Deployment and monitoring | Local production-style setup |
+| 16 | Documentation and demonstration | Final capstone |
+
+The schedule assumes access to suitable datasets and regular development time. Training experiments can overlap with frontend and backend development.
+
+---
+
+# 17. Testing Strategy
+
+## Frontend testing
+
+- Component tests.
+- Form validation tests.
+- Authentication flow tests.
+- Dashboard rendering tests.
+- Role-based navigation tests.
+
+## Backend testing
+
+- API tests.
+- Authorization tests.
+- Database integration tests.
+- Image upload tests.
+- Workflow transition tests.
+
+## ML testing
+
+- Dataset validation.
+- Preprocessing tests.
+- Model input validation.
+- Prediction output validation.
+- Reproducibility tests.
+- Model evaluation tests.
+
+## End-to-end testing
+
+The most important scenario:
+
+1. Citizen registers.
+2. Citizen submits road damage image.
+3. Incident is created.
+4. ML service analyzes the image.
+5. Prediction is saved.
+6. Inspector verifies the prediction.
+7. Administrator assigns a repair task.
+8. Maintenance team completes the task.
+9. Administrator closes the incident.
+10. Dashboard updates the relevant statistics.
+
+---
+
+# 18. Risks and Mitigation
+
+| Risk | Mitigation |
+|---|---|
+| Insufficient severity labels | Create a documented annotation process |
+| Dataset class imbalance | Class weighting and augmentation |
+| Poor image classification | Compare multiple architectures |
+| Synthetic data misleading results | Clearly separate synthetic and real data |
+| Missing repair records | Treat cost and duration prediction as conditional modules |
+| GPU limitations | CPU-compatible baseline and smaller models |
+| Geographic clustering errors | Use PostGIS and appropriate distance metrics |
+| Model overfitting | Cross-validation and independent test sets |
+| False critical predictions | Human verification and calibrated thresholds |
+| Large application complexity | Modular implementation and staged releases |
+
+---
+
+# 19. Final Capstone Deliverables
+
+The final submission should include:
+
+### Software deliverables
+
+1. Complete Next.js frontend.
+2. Express backend.
+3. FastAPI ML service.
+4. PostgreSQL/PostGIS database.
+5. Docker Compose configuration.
+6. Local object storage.
+7. Authentication and authorization.
+8. Incident reporting.
+9. AI inference integration.
+10. Maintenance management.
+11. Analytics dashboards.
+
+### ML deliverables
+
+1. Exploratory data analysis.
+2. Preprocessing pipelines.
+3. Classical ML experiments.
+4. Bagging and boosting experiments.
+5. K-Means implementation.
+6. PCA experiments.
+7. CNN model.
+8. Transfer learning comparison.
+9. ANN experiments.
+10. RNN/LSTM forecasting.
+11. Model evaluation reports.
+12. Versioned model artifacts.
+
+### Documentation deliverables
+
+1. PRD.
+2. System architecture.
+3. ER diagram.
+4. Database schema.
+5. API documentation.
+6. Dataset documentation.
+7. Model cards.
+8. Experiment results.
+9. Deployment guide.
+10. User guide.
+11. Final capstone report.
+12. Presentation slides.
+
+---
+
+# 20. Final Definition of Success
+
+CivicPulse AI will be considered a successful capstone when it demonstrates the complete transformation of an unstructured road damage report into a verified and actionable maintenance case.
+
+The final product must demonstrate:
+
+- A working citizen reporting interface.
+- AI-powered image classification.
+- Structured severity and priority assessment.
+- Geographical incident intelligence.
+- A functioning maintenance workflow.
+- Model evaluation and explainability.
+- Predictive analytics based on appropriate historical data.
+- A reproducible ML experimentation pipeline.
+- A complete locally deployable application.
+
+**Final product positioning:**
+
+CivicPulse AI is an AI-powered road infrastructure intelligence platform that combines computer vision, machine learning, geospatial analytics and predictive maintenance to help municipalities identify, prioritize and manage road damage more effectively.
+
+**Project objective:** Build a working, reproducible and technically defensible AI/ML product that demonstrates the application of machine learning concepts to a meaningful real-world infrastructure problem.

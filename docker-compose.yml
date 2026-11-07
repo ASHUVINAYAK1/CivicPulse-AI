@@ -1,0 +1,78 @@
+version: "3.9"
+
+services:
+  # ---- PostgreSQL + PostGIS ----
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: civicpulse-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-civicpulse}
+      POSTGRES_USER: ${POSTGRES_USER:-civicpulse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-civicpulse_dev_password}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-civicpulse} -d ${POSTGRES_DB:-civicpulse}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - civicpulse-network
+
+  # ---- Redis ----
+  redis:
+    image: redis:7-alpine
+    container_name: civicpulse-redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:-civicpulse_redis_dev}
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-civicpulse_redis_dev}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - civicpulse-network
+
+  # ---- MinIO (S3-compatible object storage) ----
+  minio:
+    image: minio/minio:latest
+    container_name: civicpulse-storage
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-civicpulse_minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-civicpulse_minio_dev_password}
+    ports:
+      - "127.0.0.1:${MINIO_PORT:-9000}:9000"
+      - "127.0.0.1:9001:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - civicpulse-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local
+
+networks:
+  civicpulse-network:
+    driver: bridge

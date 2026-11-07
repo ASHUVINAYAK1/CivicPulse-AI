@@ -1,0 +1,16 @@
+{
+  "name": "civicpulse-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CivicPulse AI - Road Infrastructure Monitoring and Predictive Maintenance Platform",
+  "scripts": {
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:api": "cd services/api && npm run dev",
+    "dev:ml": "cd services/ml && uvicorn app.main:app --reload --port 8000",
+    "infra:up": "docker compose up -d db redis minio",
+    "infra:down": "docker compose down",
+    "build:types": "cd packages/shared-types && npm run build",
+    "build:contracts": "cd packages/api-contracts && npm run build"
+  },
+  "license": "UNLICENSED"
+}
