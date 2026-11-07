@@ -77,3 +77,4 @@ npm run dev
 - FastAPI ML Readiness: `http://localhost:8000/ready`
 - FastAPI Swagger UI: `http://localhost:8000/docs`
 - Next.js Web Console: `http://localhost:3000`
+

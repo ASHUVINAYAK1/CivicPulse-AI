@@ -42,3 +42,4 @@ export const INCIDENT_STATUSES = {
   closed: { label: 'Closed', color: '#94a3b8' },
   rejected: { label: 'Rejected', color: '#ef4444' },
 } as const;
+

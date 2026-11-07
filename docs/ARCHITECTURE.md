@@ -26,3 +26,4 @@
 - **`infrastructure/`**: Declarative database schemas, Redis configs, and MinIO storage initialization.
 - **`datasets/`**: Normalized directory structure for raw, processed, annotated, and synthetic data (git-ignored for privacy/storage).
 - **`notebooks/`**: Six specialized research tracks: EDA, Classical ML, Clustering, Computer Vision, Deep Learning, and Forecasting.
+

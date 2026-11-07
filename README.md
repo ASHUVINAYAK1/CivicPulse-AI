@@ -169,3 +169,4 @@ Open **`http://localhost:3000`** in your browser.
 - **Decoupled Architecture**: Stateless microservice communication over REST contracts.
 - **Traceability**: All model inferences capture model version IDs, execution latencies, and human verification stamps.
 - **Data Protection**: Strict `.gitignore` rules prevent accidental commits of secrets, datasets, or trained model artifacts.
+

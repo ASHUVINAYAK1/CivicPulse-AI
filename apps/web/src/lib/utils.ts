@@ -16,3 +16,4 @@ export function formatDate(dateStr: string): string {
     year: 'numeric',
   });
 }
+
