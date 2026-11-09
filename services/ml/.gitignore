@@ -1,0 +1,38 @@
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Testing & Coverage
+.pytest_cache/
+coverage/
+.coverage
+htmlcov/
+
+# Model Weights & Binary Checkpoints
+*.pt
+*.pth
+*.h5
+*.hdf5
+*.pkl
+*.joblib
+*.onnx
+*.tflite
+*.pb
+*.safetensors
+*.bin
+*.weights
+*.ckpt
+
+# Environment & Logs
+.env
+.env.*
+!.env.example
+*.log
+logs/
+

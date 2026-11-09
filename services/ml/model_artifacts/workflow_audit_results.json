@@ -1,0 +1,25 @@
+{
+  "minio_persistence": {
+    "success": true,
+    "size": 52165,
+    "storageKey": "incidents/2026-11-07/vzncnt27-India_000038.jpg"
+  },
+  "db_persistence": {
+    "success": true,
+    "incidentNumber": "INC-357677-895"
+  },
+  "retrieval_and_presigned_url": {
+    "success": true,
+    "url_preview": "http://localhost:9000/civicpulse-images/incidents/2026-11-07..."
+  },
+  "inspector_verification": {
+    "success": true,
+    "verificationId": "397065c9-672f-4773-812d-eb6885dc05c5"
+  },
+  "duplicate_behavior": {
+    "duplicate_accepted_as_new_incident": true,
+    "original_id": "f6e1f260-241b-4d0e-aaf8-8013c183ce51",
+    "duplicate_id": "2ef50145-b304-46be-97bb-66eaa8776e2a",
+    "gap_noted": "No spatial or image-hash deduplication at ingest gate."
+  }
+}

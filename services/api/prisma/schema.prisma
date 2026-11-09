@@ -48,6 +48,7 @@ model User {
   createdMaintenance  MaintenanceTask[]      @relation("CreatedMaintenanceTasks")
   verifications       IncidentVerification[] @relation("InspectorVerifications")
   auditLogs           AuditLog[]             @relation("UserAuditLogs")
+  priorityReviews     MaintenancePriorityRecommendation[] @relation("PriorityReviewer")
 
   @@map("users")
 }
@@ -74,18 +75,29 @@ model Incident {
   createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
 
+  // Deduplication & Lineage
+  canonicalIncidentId String?   @map("canonical_incident_id") @db.Uuid
+  duplicateStatus     String    @default("none") @map("duplicate_status") @db.VarChar(30)
+  duplicateConfidence Float?    @map("duplicate_confidence")
+
   // Relationships
-  reporter      User                   @relation("ReportedIncidents", fields: [reporterId], references: [id], onDelete: Cascade)
-  images        IncidentImage[]
-  predictions   AiPrediction[]
-  verifications IncidentVerification[]
-  tasks         MaintenanceTask[]
+  reporter          User                   @relation("ReportedIncidents", fields: [reporterId], references: [id], onDelete: Cascade)
+  canonicalIncident Incident?              @relation("IncidentDuplicates", fields: [canonicalIncidentId], references: [id], onDelete: SetNull)
+  duplicateReports  Incident[]             @relation("IncidentDuplicates")
+  images            IncidentImage[]
+  predictions       AiPrediction[]
+  verifications     IncidentVerification[]
+  tasks             MaintenanceTask[]
+  priorityRecommendations MaintenancePriorityRecommendation[]
+  repairEstimates         RepairCostEstimate[]
 
   @@index([status])
   @@index([damageType])
   @@index([severity])
   @@index([reportedAt])
   @@index([latitude, longitude])
+  @@index([canonicalIncidentId])
+  @@index([duplicateStatus])
   @@map("incidents")
 }
 
@@ -101,12 +113,16 @@ model IncidentImage {
   contentType      String   @map("content_type") @db.VarChar(100)
   fileSize         BigInt   @map("file_size")
   imageType        String   @default("report") @map("image_type") @db.VarChar(30)
+  perceptualHash   String?  @map("perceptual_hash") @db.VarChar(64)
+  dHash            String?  @map("dhash") @db.VarChar(64)
   uploadedAt       DateTime @default(now()) @map("uploaded_at") @db.Timestamp(6)
 
   // Relationships
   incident Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
 
   @@index([incidentId])
+  @@index([perceptualHash])
+  @@index([dHash])
   @@map("incident_images")
 }
 
@@ -183,6 +199,7 @@ model MaintenanceTask {
   assignee User?               @relation("AssignedMaintenanceTasks", fields: [assignedTo], references: [id], onDelete: SetNull)
   assigner User                @relation("CreatedMaintenanceTasks", fields: [assignedBy], references: [id], onDelete: Cascade)
   updates  MaintenanceUpdate[]
+  repairEstimates RepairCostEstimate[]
 
   @@index([taskStatus])
   @@index([assignedTo])
@@ -262,18 +279,104 @@ model AuditLog {
 // -------------------------------------------------------
 
 model IncidentForecast {
-  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  regionId           String   @map("region_id") @db.VarChar(100)
-  modelVersionId     String?  @map("model_version_id") @db.Uuid
-  forecastPeriod     DateTime @map("forecast_period") @db.Date
-  predictedIncidents Float    @map("predicted_incidents")
-  lowerBound         Float?   @map("lower_bound")
-  upperBound         Float?   @map("upper_bound")
-  generatedAt        DateTime @default(now()) @map("generated_at") @db.Timestamp(6)
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  regionId              String    @map("region_id") @db.VarChar(100)
+  modelVersionId        String?   @map("model_version_id") @db.Uuid
+  forecastPeriod        DateTime  @map("forecast_period") @db.Date
+  predictedIncidents    Float     @map("predicted_incidents")
+  lowerBound            Float?    @map("lower_bound")
+  upperBound            Float?    @map("upper_bound")
+  aggregationFrequency  String    @default("monthly") @map("aggregation_frequency") @db.VarChar(30)
+  modelType             String    @default("synthetic_seed") @map("model_type") @db.VarChar(50)
+  readinessStatus       String    @default("DATA_INSUFFICIENT") @map("readiness_status") @db.VarChar(50)
+  isSynthetic           Boolean   @default(false) @map("is_synthetic")
+  trainingWindowStart   DateTime? @map("training_window_start") @db.Timestamp(6)
+  trainingWindowEnd     DateTime? @map("training_window_end") @db.Timestamp(6)
+  metadata              Json?
+  generatedAt           DateTime  @default(now()) @map("generated_at") @db.Timestamp(6)
 
   // Relationships
   modelRegistry ModelRegistry? @relation(fields: [modelVersionId], references: [id], onDelete: SetNull)
 
   @@index([regionId, forecastPeriod])
+  @@index([isSynthetic])
   @@map("incident_forecasts")
+}
+
+// -------------------------------------------------------
+// 11. Maintenance Priority Recommendations (Phase 3 Stage 3)
+// -------------------------------------------------------
+
+model MaintenancePriorityRecommendation {
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  incidentId           String    @map("incident_id") @db.Uuid
+  recommendedPriority  String    @map("recommended_priority") @db.VarChar(30)
+  priorityScore        Float     @map("priority_score")
+  factorScores         Json      @map("factor_scores")
+  weightsUsed          Json      @map("weights_used")
+  contributingEvidence Json      @map("contributing_evidence")
+  missingInformation   Json?     @map("missing_information")
+  explanation          String    @db.Text
+  scoringRuleVersion   String    @map("scoring_rule_version") @db.VarChar(50)
+  computedAt           DateTime  @default(now()) @map("computed_at") @db.Timestamp(6)
+  reviewStatus         String    @default("pending") @map("review_status") @db.VarChar(40)
+  reviewedPriority     String?   @map("reviewed_priority") @db.VarChar(30)
+  reviewedBy           String?   @map("reviewed_by") @db.Uuid
+  reviewedAt           DateTime? @map("reviewed_at") @db.Timestamp(6)
+  overrideReason       String?   @map("override_reason") @db.Text
+
+  // Relationships
+  incident Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  reviewer User?    @relation("PriorityReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+
+  @@index([incidentId])
+  @@index([recommendedPriority])
+  @@index([reviewStatus])
+  @@index([computedAt])
+  @@map("maintenance_priority_recommendations")
+}
+
+// -------------------------------------------------------
+// 12. Repair Cost & Duration Estimates (Phase 3 Stage 4)
+// -------------------------------------------------------
+
+model RepairCostEstimate {
+  id                     String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  incidentId             String    @map("incident_id") @db.Uuid
+  taskId                 String?   @map("task_id") @db.Uuid
+  region                 String    @db.VarChar(50)
+  rateScheduleVersion    String    @map("rate_schedule_version") @db.VarChar(100)
+  estimationStatus       String    @map("estimation_status") @db.VarChar(50)
+  measuredAreaSqMeters   Float?    @map("measured_area_sq_meters")
+  measurementSource      String    @default("unmeasured_missing") @map("measurement_source") @db.VarChar(50)
+  depthMeters            Float?    @map("depth_meters")
+  materialType           String?   @map("material_type") @db.VarChar(100)
+  materialQuantity       Float?    @map("material_quantity")
+  materialUnit           String?   @map("material_unit") @db.VarChar(30)
+  materialCost           Float?    @map("material_cost")
+  laborHours             Float?    @map("labor_hours")
+  laborCost              Float?    @map("labor_cost")
+  equipmentHours         Float?    @map("equipment_hours")
+  equipmentCost          Float?    @map("equipment_cost")
+  mobilizationCost       Float?    @map("mobilization_cost")
+  totalEstimatedCost     Float?    @map("total_estimated_cost")
+  currency               String    @default("INR") @db.VarChar(10)
+  estimatedDurationHours Float?    @map("estimated_duration_hours")
+  estimatedDurationDays  Float?    @map("estimated_duration_days")
+  crewSize               Int?      @map("crew_size")
+  assumptions            Json?
+  breakdown              Json?
+  missingInformation     Json?     @map("missing_information")
+  computedAt             DateTime  @default(now()) @map("computed_at") @db.Timestamp(6)
+  isActualCost           Boolean   @default(false) @map("is_actual_cost")
+
+  // Relationships
+  incident Incident         @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  task     MaintenanceTask? @relation(fields: [taskId], references: [id], onDelete: SetNull)
+
+  @@index([incidentId])
+  @@index([estimationStatus])
+  @@index([region])
+  @@index([computedAt])
+  @@map("repair_cost_estimates")
 }

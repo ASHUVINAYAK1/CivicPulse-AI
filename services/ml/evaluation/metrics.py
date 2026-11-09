@@ -107,3 +107,4 @@ def evaluate_forecasting(y_true: np.ndarray, y_pred: np.ndarray) -> Dict[str, fl
         "rmse": round(rmse, 4),
         "mape": round(mape, 4),
     }
+

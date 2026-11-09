@@ -1,0 +1,268 @@
+{
+  "model_architecture": "resnet18",
+  "checkpoint_path": "services\\ml\\model_artifacts\\production_model.pt",
+  "dataset_split": "rdd2022_india_grouped_v2/test",
+  "evaluation_timestamp": "2026-11-07",
+  "num_test_samples": 1047,
+  "provenance": {
+    "from_raw_train": 761,
+    "from_raw_val": 134,
+    "from_raw_test": 152
+  },
+  "overall_metrics": {
+    "macro_f1": 0.764,
+    "macro_precision": 0.931,
+    "macro_recall": 0.7113,
+    "micro_f1": 0.8883,
+    "micro_precision": 0.911,
+    "micro_recall": 0.8667,
+    "weighted_f1": 0.8848,
+    "exact_match_ratio": 0.8997,
+    "hamming_loss": 0.0289,
+    "expected_calibration_error_ece": 0.0109,
+    "brier_score": 0.0235
+  },
+  "binary_damage_metrics": {
+    "accuracy": 0.9379,
+    "precision": 0.9459,
+    "recall": 0.9054,
+    "f1_score": 0.9252,
+    "confusion_matrix": {
+      "tn": 580,
+      "fp": 23,
+      "fn": 42,
+      "tp": 402
+    }
+  },
+  "per_class_metrics": {
+    "D00": {
+      "name": "Longitudinal Crack",
+      "support": 149,
+      "tp": 128,
+      "fp": 14,
+      "fn": 21,
+      "tn": 884,
+      "confusion_matrix_2x2": {
+        "tn": 884,
+        "fp": 14,
+        "fn": 21,
+        "tp": 128
+      },
+      "precision": 0.9014,
+      "recall": 0.8591,
+      "f1_score": 0.8797,
+      "specificity": 0.9844,
+      "max_prob_on_positive": 0.9996,
+      "mean_prob_on_positive": 0.772
+    },
+    "D10": {
+      "name": "Transverse Crack",
+      "support": 8,
+      "tp": 2,
+      "fp": 0,
+      "fn": 6,
+      "tn": 1039,
+      "confusion_matrix_2x2": {
+        "tn": 1039,
+        "fp": 0,
+        "fn": 6,
+        "tp": 2
+      },
+      "precision": 1.0,
+      "recall": 0.25,
+      "f1_score": 0.4,
+      "specificity": 1.0,
+      "max_prob_on_positive": 0.8695,
+      "mean_prob_on_positive": 0.2558
+    },
+    "D20": {
+      "name": "Alligator Crack",
+      "support": 239,
+      "tp": 224,
+      "fp": 19,
+      "fn": 15,
+      "tn": 789,
+      "confusion_matrix_2x2": {
+        "tn": 789,
+        "fp": 19,
+        "fn": 15,
+        "tp": 224
+      },
+      "precision": 0.9218,
+      "recall": 0.9372,
+      "f1_score": 0.9295,
+      "specificity": 0.9765,
+      "max_prob_on_positive": 1.0,
+      "mean_prob_on_positive": 0.8948
+    },
+    "D40": {
+      "name": "Pothole",
+      "support": 159,
+      "tp": 127,
+      "fp": 14,
+      "fn": 32,
+      "tn": 874,
+      "confusion_matrix_2x2": {
+        "tn": 874,
+        "fp": 14,
+        "fn": 32,
+        "tp": 127
+      },
+      "precision": 0.9007,
+      "recall": 0.7987,
+      "f1_score": 0.8467,
+      "specificity": 0.9842,
+      "max_prob_on_positive": 0.9998,
+      "mean_prob_on_positive": 0.7859
+    }
+  },
+  "strictly_unseen_heldout_subset": {
+    "sample_count": 152,
+    "macro_f1": 0.4621,
+    "binary_accuracy": 0.8487,
+    "per_class": {
+      "D00": {
+        "support": 19,
+        "tp": 11,
+        "fp": 7,
+        "fn": 8,
+        "tn": 126,
+        "precision": 0.6111,
+        "recall": 0.5789,
+        "f1_score": 0.5946
+      },
+      "D10": {
+        "support": 2,
+        "tp": 0,
+        "fp": 0,
+        "fn": 2,
+        "tn": 150,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0
+      },
+      "D20": {
+        "support": 28,
+        "tp": 24,
+        "fp": 5,
+        "fn": 4,
+        "tn": 119,
+        "precision": 0.8276,
+        "recall": 0.8571,
+        "f1_score": 0.8421
+      },
+      "D40": {
+        "support": 23,
+        "tp": 7,
+        "fp": 4,
+        "fn": 16,
+        "tn": 125,
+        "precision": 0.6364,
+        "recall": 0.3043,
+        "f1_score": 0.4118
+      }
+    }
+  },
+  "d10_transverse_threshold_sensitivity": [
+    {
+      "threshold": 0.5,
+      "tp": 2,
+      "fp": 0,
+      "fn": 6,
+      "tn": 1039,
+      "precision": 1.0,
+      "recall": 0.25,
+      "f1_score": 0.4
+    },
+    {
+      "threshold": 0.4,
+      "tp": 2,
+      "fp": 0,
+      "fn": 6,
+      "tn": 1039,
+      "precision": 1.0,
+      "recall": 0.25,
+      "f1_score": 0.4
+    },
+    {
+      "threshold": 0.3,
+      "tp": 2,
+      "fp": 0,
+      "fn": 6,
+      "tn": 1039,
+      "precision": 1.0,
+      "recall": 0.25,
+      "f1_score": 0.4
+    },
+    {
+      "threshold": 0.25,
+      "tp": 3,
+      "fp": 0,
+      "fn": 5,
+      "tn": 1039,
+      "precision": 1.0,
+      "recall": 0.375,
+      "f1_score": 0.5455
+    },
+    {
+      "threshold": 0.2,
+      "tp": 3,
+      "fp": 0,
+      "fn": 5,
+      "tn": 1039,
+      "precision": 1.0,
+      "recall": 0.375,
+      "f1_score": 0.5455
+    },
+    {
+      "threshold": 0.15,
+      "tp": 3,
+      "fp": 2,
+      "fn": 5,
+      "tn": 1037,
+      "precision": 0.6,
+      "recall": 0.375,
+      "f1_score": 0.4615
+    },
+    {
+      "threshold": 0.1,
+      "tp": 4,
+      "fp": 6,
+      "fn": 4,
+      "tn": 1033,
+      "precision": 0.4,
+      "recall": 0.5,
+      "f1_score": 0.4444
+    },
+    {
+      "threshold": 0.05,
+      "tp": 6,
+      "fp": 26,
+      "fn": 2,
+      "tn": 1013,
+      "precision": 0.1875,
+      "recall": 0.75,
+      "f1_score": 0.3
+    },
+    {
+      "threshold": 0.02,
+      "tp": 6,
+      "fp": 68,
+      "fn": 2,
+      "tn": 971,
+      "precision": 0.0811,
+      "recall": 0.75,
+      "f1_score": 0.1463
+    }
+  ],
+  "baseline_comparison_phase_2_1": {
+    "original_macro_f1": 0.4529,
+    "original_micro_f1": 0.6379,
+    "original_exact_match": 0.717,
+    "original_binary_accuracy": 0.8199,
+    "original_binary_f1": 0.7433,
+    "delta_macro_f1_full": 0.3111,
+    "delta_macro_f1_strictly_unseen": 0.0092,
+    "delta_binary_accuracy_strictly_unseen": 0.0288
+  }
+}

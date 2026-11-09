@@ -65,3 +65,4 @@ class StructuredIncidentTransformer(BaseEstimator, TransformerMixin):
         severity_col = transformed[["severity_score"]].values
 
         return np.hstack([scaled_numerics, encoded_damage, severity_col])
+

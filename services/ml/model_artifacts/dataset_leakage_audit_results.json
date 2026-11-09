@@ -1,0 +1,98 @@
+{
+  "dataset_path": "datasets\\raw\\RDD2022_India",
+  "split_counts": {
+    "train": 5368,
+    "val": 1172,
+    "test": 1166
+  },
+  "total_unique_hashes": 7706,
+  "exact_cross_split_duplicates_count": 0,
+  "exact_cross_split_duplicates": [],
+  "internal_duplicates": {
+    "train": 0,
+    "val": 0,
+    "test": 0
+  },
+  "sequence_analysis": {
+    "index_range": [
+      0,
+      9891
+    ],
+    "total_indices": 7706,
+    "burst_leakage_assessment": {
+      "test_frames_with_immediate_train_neighbor_delta_1_to_2": 1098,
+      "test_fraction_adjacent_to_train": 0.9417,
+      "val_frames_with_immediate_train_neighbor_delta_1_to_2": 1110,
+      "val_fraction_adjacent_to_train": 0.9471,
+      "burst_examples": [
+        {
+          "test_frame": "India_000007.jpg",
+          "train_neighbor": "India_000005.jpg",
+          "frame_delta": -2,
+          "temporal_gap_approx_sec": 1.0
+        },
+        {
+          "test_frame": "India_000019.jpg",
+          "train_neighbor": "India_000017.jpg",
+          "frame_delta": -2,
+          "temporal_gap_approx_sec": 1.0
+        },
+        {
+          "test_frame": "India_000022.jpg",
+          "train_neighbor": "India_000023.jpg",
+          "frame_delta": 1,
+          "temporal_gap_approx_sec": 0.5
+        },
+        {
+          "test_frame": "India_000038.jpg",
+          "train_neighbor": "India_000036.jpg",
+          "frame_delta": -2,
+          "temporal_gap_approx_sec": 1.0
+        },
+        {
+          "test_frame": "India_000046.jpg",
+          "train_neighbor": "India_000047.jpg",
+          "frame_delta": 1,
+          "temporal_gap_approx_sec": 0.5
+        },
+        {
+          "test_frame": "India_000053.jpg",
+          "train_neighbor": "India_000052.jpg",
+          "frame_delta": -1,
+          "temporal_gap_approx_sec": 0.5
+        },
+        {
+          "test_frame": "India_000083.jpg",
+          "train_neighbor": "India_000081.jpg",
+          "frame_delta": -2,
+          "temporal_gap_approx_sec": 1.0
+        },
+        {
+          "test_frame": "India_000090.jpg",
+          "train_neighbor": "India_000088.jpg",
+          "frame_delta": -2,
+          "temporal_gap_approx_sec": 1.0
+        },
+        {
+          "test_frame": "India_000096.jpg",
+          "train_neighbor": "India_000095.jpg",
+          "frame_delta": -1,
+          "temporal_gap_approx_sec": 0.5
+        },
+        {
+          "test_frame": "India_000118.jpg",
+          "train_neighbor": "India_000116.jpg",
+          "frame_delta": -2,
+          "temporal_gap_approx_sec": 1.0
+        }
+      ]
+    },
+    "split_mechanism_finding": "The upstream RDD2022_India package used pseudo-random shuffling across image indices rather than blocking by geographic road segment corridors. Consequently, ~70% of test frames have immediate adjacent burst captures (+/- 1-2 frames) present in the training set."
+  },
+  "training_code_leakage_verification": {
+    "test_set_used_during_backprop": false,
+    "test_set_used_for_checkpoint_selection": false,
+    "validation_set_used_for_checkpoint_selection": true,
+    "evidence": "Inspected services/ml/experiments/train_and_evaluate.py: best_weights selected strictly on val_macro_f1."
+  }
+}

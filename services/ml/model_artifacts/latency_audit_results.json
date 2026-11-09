@@ -1,0 +1,77 @@
+{
+  "device": "cuda:0 (NVIDIA GeForce RTX 5060 Ti)",
+  "gpu_warmup_applied": true,
+  "cuda_synchronization_applied": true,
+  "breakdown": {
+    "1_image_preprocessing": {
+      "median_ms": 6.76,
+      "p95_ms": 7.52,
+      "p99_ms": 7.99,
+      "min_ms": 6.3,
+      "max_ms": 8.31,
+      "mean_ms": 6.83,
+      "std_ms": 0.36,
+      "iterations": 50
+    },
+    "2_classification_inference_resnet18": {
+      "median_ms": 1.9,
+      "p95_ms": 2.53,
+      "p99_ms": 6.76,
+      "min_ms": 1.67,
+      "max_ms": 10.38,
+      "mean_ms": 2.17,
+      "std_ms": 1.2,
+      "iterations": 50
+    },
+    "3_detection_inference_ssdlite320": {
+      "median_ms": 12.74,
+      "p95_ms": 15.28,
+      "p99_ms": 22.3,
+      "min_ms": 10.79,
+      "max_ms": 28.72,
+      "mean_ms": 13.24,
+      "std_ms": 2.53,
+      "iterations": 50
+    },
+    "4_fastapi_direct_request_ipv4": {
+      "median_ms": 29.8,
+      "p95_ms": 36.05,
+      "p99_ms": 40.66,
+      "min_ms": 27.4,
+      "max_ms": 41.83,
+      "mean_ms": 30.36,
+      "std_ms": 3.02,
+      "iterations": 30
+    },
+    "4b_fastapi_direct_request_localhost_ipv6_penalty": {
+      "median_ms": 2071.46,
+      "p95_ms": 2076.63,
+      "p99_ms": 2077.51,
+      "min_ms": 2066.92,
+      "max_ms": 2077.73,
+      "mean_ms": 2071.67,
+      "std_ms": 3.53,
+      "iterations": 5
+    },
+    "5_express_to_fastapi_proxy": {
+      "median_ms": 31.19,
+      "p95_ms": 35.34,
+      "p99_ms": 36.73,
+      "min_ms": 28.36,
+      "max_ms": 37.03,
+      "mean_ms": 31.3,
+      "std_ms": 2.05,
+      "iterations": 30
+    },
+    "6_complete_pipeline_minio_and_postgres": {
+      "median_ms": 47.46,
+      "p95_ms": 48.82,
+      "p99_ms": 48.89,
+      "min_ms": 43.36,
+      "max_ms": 48.91,
+      "mean_ms": 46.45,
+      "std_ms": 1.93,
+      "iterations": 25
+    }
+  }
+}

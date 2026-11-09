@@ -76,3 +76,4 @@ class ImagePreprocessor:
         """Preprocesses a batch of images into a single array (N, C, H, W)."""
         processed = [self.preprocess_image(img) for img in images]
         return np.stack(processed, axis=0)
+

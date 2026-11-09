@@ -185,3 +185,4 @@ ORDER BY distance_meters ASC;
 - Password hashes are stored as Argon2id/bcrypt strings in `users.password_hash`.
 - Cascade deletion is enforced for child artifacts (`incident_images`, `ai_predictions`) when an incident is deleted.
 - Verification and audit records preserve history without destructive updates.
+

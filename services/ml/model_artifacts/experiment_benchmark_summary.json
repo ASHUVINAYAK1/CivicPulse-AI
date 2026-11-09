@@ -1,0 +1,159 @@
+{
+  "mobilenet_v3_small": {
+    "backbone": "mobilenet_v3_small",
+    "param_count": 1521956,
+    "train_time_sec": 281.2,
+    "avg_latency_ms": 0.48,
+    "vram_peak_mb": 1056.7,
+    "best_val_f1": 0.3852,
+    "test_loss": 0.2368,
+    "test_metrics": {
+      "macro_f1": 0.3545,
+      "exact_match_ratio": 0.6638,
+      "binary_damage_acc": 0.7839,
+      "d00_f1": 0.3908,
+      "d00_prec": 0.5152,
+      "d00_rec": 0.3148,
+      "d10_f1": 0.0,
+      "d10_prec": 0.0,
+      "d10_rec": 0.0,
+      "d20_f1": 0.739,
+      "d20_prec": 0.708,
+      "d20_rec": 0.7729,
+      "d40_f1": 0.2883,
+      "d40_prec": 0.4384,
+      "d40_rec": 0.2148
+    },
+    "history": {
+      "train_loss": [
+        0.3283,
+        0.2582,
+        0.2169,
+        0.1801,
+        0.158
+      ],
+      "val_loss": [
+        0.3253,
+        0.2754,
+        0.2571,
+        0.2491,
+        0.2468
+      ],
+      "val_f1": [
+        0.1875,
+        0.2821,
+        0.3154,
+        0.3539,
+        0.3852
+      ]
+    },
+    "checkpoint_path": "services\\ml\\model_artifacts\\mobilenet_v3_small_best.pt"
+  },
+  "resnet18": {
+    "backbone": "resnet18",
+    "param_count": 11178564,
+    "train_time_sec": 272.2,
+    "avg_latency_ms": 0.66,
+    "vram_peak_mb": 1586.0,
+    "best_val_f1": 0.4599,
+    "test_loss": 0.2243,
+    "test_metrics": {
+      "macro_f1": 0.4529,
+      "exact_match_ratio": 0.717,
+      "binary_damage_acc": 0.8199,
+      "d00_f1": 0.523,
+      "d00_prec": 0.6116,
+      "d00_rec": 0.4568,
+      "d10_f1": 0.0,
+      "d10_prec": 0.0,
+      "d10_rec": 0.0,
+      "d20_f1": 0.7885,
+      "d20_prec": 0.8136,
+      "d20_rec": 0.7649,
+      "d40_f1": 0.5,
+      "d40_prec": 0.563,
+      "d40_rec": 0.4497
+    },
+    "history": {
+      "train_loss": [
+        0.32,
+        0.2208,
+        0.1576,
+        0.0998,
+        0.0577
+      ],
+      "val_loss": [
+        0.2631,
+        0.2352,
+        0.2696,
+        0.2403,
+        0.2273
+      ],
+      "val_f1": [
+        0.2444,
+        0.3166,
+        0.4599,
+        0.429,
+        0.4588
+      ]
+    },
+    "checkpoint_path": "services\\ml\\model_artifacts\\resnet18_best.pt"
+  },
+  "efficientnet_b0": {
+    "backbone": "efficientnet_b0",
+    "param_count": 4012672,
+    "train_time_sec": 284.5,
+    "avg_latency_ms": 0.94,
+    "vram_peak_mb": 5491.9,
+    "best_val_f1": 0.4348,
+    "test_loss": 0.2238,
+    "test_metrics": {
+      "macro_f1": 0.4394,
+      "exact_match_ratio": 0.705,
+      "binary_damage_acc": 0.8165,
+      "d00_f1": 0.5036,
+      "d00_prec": 0.6034,
+      "d00_rec": 0.4321,
+      "d10_f1": 0.0,
+      "d10_prec": 0.0,
+      "d10_rec": 0.0,
+      "d20_f1": 0.8032,
+      "d20_prec": 0.8097,
+      "d20_rec": 0.7968,
+      "d40_f1": 0.4509,
+      "d40_prec": 0.4921,
+      "d40_rec": 0.4161
+    },
+    "history": {
+      "train_loss": [
+        0.3402,
+        0.2244,
+        0.164,
+        0.1165,
+        0.0895
+      ],
+      "val_loss": [
+        0.2666,
+        0.2317,
+        0.2248,
+        0.2309,
+        0.2295
+      ],
+      "val_f1": [
+        0.274,
+        0.3867,
+        0.3946,
+        0.4297,
+        0.4348
+      ]
+    },
+    "checkpoint_path": "services\\ml\\model_artifacts\\efficientnet_b0_best.pt"
+  },
+  "ssdlite320": {
+    "architecture": "ssdlite320_mobilenet_v3_large",
+    "train_time_sec": 71.8,
+    "latency_ms": 10.01,
+    "final_loss": 5.4974,
+    "checkpoint_path": "services\\ml\\model_artifacts\\detector_ssdlite320_best.pt"
+  }
+}

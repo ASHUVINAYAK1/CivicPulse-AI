@@ -1,0 +1,532 @@
+{
+  "benchmark_metadata": {
+    "generated_at": "2026-11-07T17:13:10.195Z",
+    "calibration_pairs_count": 12,
+    "heldout_evaluation_pairs_count": 20,
+    "decision_threshold": 0.5,
+    "weights": {
+      "image": 0.4,
+      "distance": 0.3,
+      "time": 0.15,
+      "type": 0.15,
+      "metadata_bonus_max": 0.05
+    }
+  },
+  "calibration_metrics": {
+    "dHash_only": {
+      "tp": 3,
+      "fp": 1,
+      "tn": 5,
+      "fn": 3,
+      "precision": 0.75,
+      "recall": 0.5,
+      "f1": 0.6,
+      "fpr": 0.1667,
+      "fnr": 0.5,
+      "accuracy": 0.6667
+    },
+    "pHash_only": {
+      "tp": 3,
+      "fp": 1,
+      "tn": 5,
+      "fn": 3,
+      "precision": 0.75,
+      "recall": 0.5,
+      "f1": 0.6,
+      "fpr": 0.1667,
+      "fnr": 0.5,
+      "accuracy": 0.6667
+    },
+    "gps_distance_only": {
+      "tp": 6,
+      "fp": 3,
+      "tn": 3,
+      "fn": 0,
+      "precision": 0.6667,
+      "recall": 1,
+      "f1": 0.8,
+      "fpr": 0.5,
+      "fnr": 0,
+      "accuracy": 0.75
+    },
+    "time_delta_only": {
+      "tp": 6,
+      "fp": 2,
+      "tn": 4,
+      "fn": 0,
+      "precision": 0.75,
+      "recall": 1,
+      "f1": 0.8571,
+      "fpr": 0.3333,
+      "fnr": 0,
+      "accuracy": 0.8333
+    },
+    "damage_category_only": {
+      "tp": 6,
+      "fp": 2,
+      "tn": 4,
+      "fn": 0,
+      "precision": 0.75,
+      "recall": 1,
+      "f1": 0.8571,
+      "fpr": 0.3333,
+      "fnr": 0,
+      "accuracy": 0.8333
+    },
+    "composite_score": {
+      "tp": 6,
+      "fp": 3,
+      "tn": 3,
+      "fn": 0,
+      "precision": 0.6667,
+      "recall": 1,
+      "f1": 0.8,
+      "fpr": 0.5,
+      "fnr": 0,
+      "accuracy": 0.75
+    }
+  },
+  "heldout_evaluation_metrics": {
+    "dHash_only": {
+      "tp": 5,
+      "fp": 2,
+      "tn": 8,
+      "fn": 5,
+      "precision": 0.7143,
+      "recall": 0.5,
+      "f1": 0.5882,
+      "fpr": 0.2,
+      "fnr": 0.5,
+      "accuracy": 0.65
+    },
+    "pHash_only": {
+      "tp": 6,
+      "fp": 2,
+      "tn": 8,
+      "fn": 4,
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1": 0.6667,
+      "fpr": 0.2,
+      "fnr": 0.4,
+      "accuracy": 0.7
+    },
+    "gps_distance_only": {
+      "tp": 10,
+      "fp": 3,
+      "tn": 7,
+      "fn": 0,
+      "precision": 0.7692,
+      "recall": 1,
+      "f1": 0.8696,
+      "fpr": 0.3,
+      "fnr": 0,
+      "accuracy": 0.85
+    },
+    "time_delta_only": {
+      "tp": 10,
+      "fp": 4,
+      "tn": 6,
+      "fn": 0,
+      "precision": 0.7143,
+      "recall": 1,
+      "f1": 0.8333,
+      "fpr": 0.4,
+      "fnr": 0,
+      "accuracy": 0.8
+    },
+    "damage_category_only": {
+      "tp": 10,
+      "fp": 3,
+      "tn": 7,
+      "fn": 0,
+      "precision": 0.7692,
+      "recall": 1,
+      "f1": 0.8696,
+      "fpr": 0.3,
+      "fnr": 0,
+      "accuracy": 0.85
+    },
+    "composite_score": {
+      "tp": 10,
+      "fp": 4,
+      "tn": 6,
+      "fn": 0,
+      "precision": 0.7143,
+      "recall": 1,
+      "f1": 0.8333,
+      "fpr": 0.4,
+      "fnr": 0,
+      "accuracy": 0.8
+    }
+  },
+  "pipeline_latencies": {
+    "avgHashComputeMs": 8.58,
+    "avgScoringMs": 0.02,
+    "totalPipelineMs": 8.59
+  },
+  "heldout_pair_results": [
+    {
+      "id": "POS-02",
+      "category": "format_conversion",
+      "groundTruth": true,
+      "compositeScore": 0.945,
+      "verdict": "high_probability_duplicate",
+      "prediction": true,
+      "dHashDist": 3,
+      "pHashDist": 4,
+      "distanceMeters": 1.2,
+      "timeDeltaHours": 2,
+      "reasons": [
+        "GPS Distance: 1.2m from incident (within 10m radius; geo-score: 0.88)",
+        "Visual Similarity: 95.3% match (dHash Hamming distance: 3/64 bits)",
+        "Temporal Delta: 2.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Longitudinal Crack')"
+      ]
+    },
+    {
+      "id": "POS-03",
+      "category": "format_conversion",
+      "groundTruth": true,
+      "compositeScore": 0.976,
+      "verdict": "high_probability_duplicate",
+      "prediction": true,
+      "dHashDist": 4,
+      "pHashDist": 0,
+      "distanceMeters": 0.8,
+      "timeDeltaHours": 5,
+      "reasons": [
+        "GPS Distance: 0.8m from incident (within 10m radius; geo-score: 0.92)",
+        "Visual Similarity: 100.0% match (pHash Hamming distance: 0/64 bits)",
+        "Temporal Delta: 5.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Alligator Crack')"
+      ]
+    },
+    {
+      "id": "POS-04",
+      "category": "format_conversion",
+      "groundTruth": true,
+      "compositeScore": 0.94,
+      "verdict": "high_probability_duplicate",
+      "prediction": true,
+      "dHashDist": 8,
+      "pHashDist": 0,
+      "distanceMeters": 2,
+      "timeDeltaHours": 24,
+      "reasons": [
+        "GPS Distance: 2.0m from incident (within 10m radius; geo-score: 0.80)",
+        "Visual Similarity: 100.0% match (pHash Hamming distance: 0/64 bits)",
+        "Temporal Delta: 24.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Pothole')"
+      ]
+    },
+    {
+      "id": "POS-06",
+      "category": "resize_compression",
+      "groundTruth": true,
+      "compositeScore": 0.798,
+      "verdict": "high_probability_duplicate",
+      "prediction": true,
+      "dHashDist": 18,
+      "pHashDist": 20,
+      "distanceMeters": 3,
+      "timeDeltaHours": 4,
+      "reasons": [
+        "GPS Distance: 3.0m from incident (within 10m radius; geo-score: 0.70)",
+        "Visual Similarity: 71.9% match (dHash Hamming distance: 18/64 bits)",
+        "Temporal Delta: 4.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Longitudinal Crack')"
+      ]
+    },
+    {
+      "id": "POS-07",
+      "category": "resize_compression",
+      "groundTruth": true,
+      "compositeScore": 0.925,
+      "verdict": "high_probability_duplicate",
+      "prediction": true,
+      "dHashDist": 3,
+      "pHashDist": 0,
+      "distanceMeters": 2.5,
+      "timeDeltaHours": 12,
+      "reasons": [
+        "GPS Distance: 2.5m from incident (within 10m radius; geo-score: 0.75)",
+        "Visual Similarity: 100.0% match (pHash Hamming distance: 0/64 bits)",
+        "Temporal Delta: 12.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Alligator Crack')"
+      ]
+    },
+    {
+      "id": "POS-08",
+      "category": "resize_compression",
+      "groundTruth": true,
+      "compositeScore": 0.805,
+      "verdict": "high_probability_duplicate",
+      "prediction": true,
+      "dHashDist": 12,
+      "pHashDist": 28,
+      "distanceMeters": 4,
+      "timeDeltaHours": 18,
+      "reasons": [
+        "GPS Distance: 4.0m from incident (within 10m radius; geo-score: 0.60)",
+        "Visual Similarity: 81.3% match (dHash Hamming distance: 12/64 bits)",
+        "Temporal Delta: 18.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Pothole')"
+      ]
+    },
+    {
+      "id": "POS-10",
+      "category": "crop_transformation",
+      "groundTruth": true,
+      "compositeScore": 0.811,
+      "verdict": "high_probability_duplicate",
+      "prediction": true,
+      "dHashDist": 16,
+      "pHashDist": 12,
+      "distanceMeters": 3.8,
+      "timeDeltaHours": 6,
+      "reasons": [
+        "GPS Distance: 3.8m from incident (within 10m radius; geo-score: 0.62)",
+        "Visual Similarity: 81.3% match (pHash Hamming distance: 12/64 bits)",
+        "Temporal Delta: 6.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Alligator Crack')"
+      ]
+    },
+    {
+      "id": "POS-12",
+      "category": "rotation_transformation",
+      "groundTruth": true,
+      "compositeScore": 0.903,
+      "verdict": "high_probability_duplicate",
+      "prediction": true,
+      "dHashDist": 13,
+      "pHashDist": 6,
+      "distanceMeters": 2,
+      "timeDeltaHours": 2,
+      "reasons": [
+        "GPS Distance: 2.0m from incident (within 10m radius; geo-score: 0.80)",
+        "Visual Similarity: 90.6% match (pHash Hamming distance: 6/64 bits)",
+        "Temporal Delta: 2.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Alligator Crack')"
+      ]
+    },
+    {
+      "id": "POS-13",
+      "category": "rotation_transformation",
+      "groundTruth": true,
+      "compositeScore": 0.87,
+      "verdict": "high_probability_duplicate",
+      "prediction": true,
+      "dHashDist": 6,
+      "pHashDist": 4,
+      "distanceMeters": 3.5,
+      "timeDeltaHours": 8,
+      "reasons": [
+        "GPS Distance: 3.5m from incident (within 10m radius; geo-score: 0.65)",
+        "Visual Similarity: 93.8% match (pHash Hamming distance: 4/64 bits)",
+        "Temporal Delta: 8.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Pothole')"
+      ]
+    },
+    {
+      "id": "POS-16",
+      "category": "same_defect_different_photo",
+      "groundTruth": true,
+      "compositeScore": 0.771,
+      "verdict": "high_probability_duplicate",
+      "prediction": true,
+      "dHashDist": 23,
+      "pHashDist": 30,
+      "distanceMeters": 4.5,
+      "timeDeltaHours": 0.12,
+      "reasons": [
+        "GPS Distance: 4.5m from incident (within 10m radius; geo-score: 0.55)",
+        "Visual Similarity: 64.1% match (dHash Hamming distance: 23/64 bits)",
+        "Temporal Delta: 0.1 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Alligator Crack')",
+        "Image Metadata: Identical capture device hardware identified",
+        "Image Metadata: Camera capture timestamps within 5 minutes"
+      ]
+    },
+    {
+      "id": "NEG-02",
+      "category": "similar_defect_distant",
+      "groundTruth": false,
+      "compositeScore": 0.69,
+      "verdict": "potential_duplicate",
+      "prediction": true,
+      "dHashDist": 8,
+      "pHashDist": 0,
+      "distanceMeters": 8200,
+      "timeDeltaHours": 72,
+      "reasons": [
+        "GPS Distance: 8200.0m from incident (within 10m radius; geo-score: 0.00)",
+        "Visual Similarity: 100.0% match (pHash Hamming distance: 0/64 bits)",
+        "Temporal Delta: 3.0 days apart (time-score: 0.93)",
+        "Damage Category: Exact match ('Pothole')"
+      ]
+    },
+    {
+      "id": "NEG-03",
+      "category": "similar_defect_distant",
+      "groundTruth": false,
+      "compositeScore": 0.679,
+      "verdict": "potential_duplicate",
+      "prediction": true,
+      "dHashDist": 4,
+      "pHashDist": 0,
+      "distanceMeters": 22000,
+      "timeDeltaHours": 120,
+      "reasons": [
+        "GPS Distance: 22000.0m from incident (within 10m radius; geo-score: 0.00)",
+        "Visual Similarity: 100.0% match (pHash Hamming distance: 0/64 bits)",
+        "Temporal Delta: 5.0 days apart (time-score: 0.86)",
+        "Damage Category: Exact match ('Alligator Crack')"
+      ]
+    },
+    {
+      "id": "NEG-05",
+      "category": "different_defect_same_road",
+      "groundTruth": false,
+      "compositeScore": 0.393,
+      "verdict": "unlikely_duplicate",
+      "prediction": false,
+      "dHashDist": 30,
+      "pHashDist": 32,
+      "distanceMeters": 65,
+      "timeDeltaHours": 3.5,
+      "reasons": [
+        "GPS Distance: 65.0m from incident (within 10m radius; geo-score: 0.00)",
+        "Visual Similarity: 53.1% match (dHash Hamming distance: 30/64 bits)",
+        "Temporal Delta: 3.5 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Divergent defect classifications ('Alligator Crack' vs 'Pothole')"
+      ]
+    },
+    {
+      "id": "NEG-06",
+      "category": "different_defect_same_road",
+      "groundTruth": false,
+      "compositeScore": 0.569,
+      "verdict": "potential_duplicate",
+      "prediction": true,
+      "dHashDist": 21,
+      "pHashDist": 36,
+      "distanceMeters": 50,
+      "timeDeltaHours": 1,
+      "reasons": [
+        "GPS Distance: 50.0m from incident (within 10m radius; geo-score: 0.00)",
+        "Visual Similarity: 67.2% match (dHash Hamming distance: 21/64 bits)",
+        "Temporal Delta: 1.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Exact match ('Pothole')"
+      ]
+    },
+    {
+      "id": "NEG-07",
+      "category": "different_defect_same_road",
+      "groundTruth": false,
+      "compositeScore": 0.418,
+      "verdict": "unlikely_duplicate",
+      "prediction": false,
+      "dHashDist": 32,
+      "pHashDist": 26,
+      "distanceMeters": 35,
+      "timeDeltaHours": 4,
+      "reasons": [
+        "GPS Distance: 35.0m from incident (within 10m radius; geo-score: 0.00)",
+        "Visual Similarity: 59.4% match (pHash Hamming distance: 26/64 bits)",
+        "Temporal Delta: 4.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Divergent defect classifications ('Longitudinal Crack' vs 'Pothole')"
+      ]
+    },
+    {
+      "id": "NEG-10",
+      "category": "nearby_unrelated",
+      "groundTruth": false,
+      "compositeScore": 0.42,
+      "verdict": "unlikely_duplicate",
+      "prediction": false,
+      "dHashDist": 25,
+      "pHashDist": 34,
+      "distanceMeters": 9.1,
+      "timeDeltaHours": 480,
+      "reasons": [
+        "GPS Distance: 9.1m from incident (within 10m radius; geo-score: 0.09)",
+        "Visual Similarity: 60.9% match (dHash Hamming distance: 25/64 bits)",
+        "Temporal Delta: 20.0 days apart (time-score: 0.34)",
+        "Damage Category: Compatible defect types ('Longitudinal Crack' vs 'Transverse Crack')"
+      ]
+    },
+    {
+      "id": "NEG-11",
+      "category": "nearby_unrelated",
+      "groundTruth": false,
+      "compositeScore": 0.521,
+      "verdict": "potential_duplicate",
+      "prediction": true,
+      "dHashDist": 30,
+      "pHashDist": 34,
+      "distanceMeters": 5.5,
+      "timeDeltaHours": 52,
+      "reasons": [
+        "GPS Distance: 5.5m from incident (within 10m radius; geo-score: 0.45)",
+        "Visual Similarity: 53.1% match (dHash Hamming distance: 30/64 bits)",
+        "Temporal Delta: 2.2 days apart (time-score: 0.96)",
+        "Damage Category: Divergent defect classifications ('Pothole' vs 'Longitudinal Crack')"
+      ]
+    },
+    {
+      "id": "NEG-12",
+      "category": "nearby_unrelated",
+      "groundTruth": false,
+      "compositeScore": 0.475,
+      "verdict": "unlikely_duplicate",
+      "prediction": false,
+      "dHashDist": 30,
+      "pHashDist": 34,
+      "distanceMeters": 8.8,
+      "timeDeltaHours": 120,
+      "reasons": [
+        "GPS Distance: 8.8m from incident (within 10m radius; geo-score: 0.12)",
+        "Visual Similarity: 53.1% match (dHash Hamming distance: 30/64 bits)",
+        "Temporal Delta: 5.0 days apart (time-score: 0.86)",
+        "Damage Category: Compatible defect types ('Alligator Crack' vs 'Longitudinal Crack')"
+      ]
+    },
+    {
+      "id": "NEG-14",
+      "category": "different_defect_same_road",
+      "groundTruth": false,
+      "compositeScore": 0.443,
+      "verdict": "unlikely_duplicate",
+      "prediction": false,
+      "dHashDist": 24,
+      "pHashDist": 22,
+      "distanceMeters": 120,
+      "timeDeltaHours": 8,
+      "reasons": [
+        "GPS Distance: 120.0m from incident (within 10m radius; geo-score: 0.00)",
+        "Visual Similarity: 65.6% match (pHash Hamming distance: 22/64 bits)",
+        "Temporal Delta: 8.0 hours apart (reported same day; time-score: 1.00)",
+        "Damage Category: Divergent defect classifications ('Pothole' vs 'Alligator Crack')"
+      ]
+    },
+    {
+      "id": "NEG-16",
+      "category": "similar_defect_distant",
+      "groundTruth": false,
+      "compositeScore": 0.433,
+      "verdict": "unlikely_duplicate",
+      "prediction": false,
+      "dHashDist": 32,
+      "pHashDist": 32,
+      "distanceMeters": 18000,
+      "timeDeltaHours": 90,
+      "reasons": [
+        "GPS Distance: 18000.0m from incident (within 10m radius; geo-score: 0.00)",
+        "Visual Similarity: 50.0% match (pHash Hamming distance: 32/64 bits)",
+        "Temporal Delta: 3.8 days apart (time-score: 0.91)",
+        "Damage Category: Compatible defect types ('Alligator Crack' vs 'Longitudinal Crack')"
+      ]
+    }
+  ]
+}

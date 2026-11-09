@@ -64,3 +64,4 @@ def test_evaluation_metrics():
     # Forecasting
     fc = evaluate_forecasting(np.array([100.0, 120.0]), np.array([105.0, 118.0]))
     assert "mape" in fc
+

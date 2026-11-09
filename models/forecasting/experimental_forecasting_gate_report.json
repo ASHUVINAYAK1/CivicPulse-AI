@@ -1,0 +1,23 @@
+{
+  "success": false,
+  "status": "DATA_INSUFFICIENT",
+  "message": "Forecasting model 'neural-forecaster-bilstm' training aborted: Insufficient longitudinal observation depth.",
+  "audit": {
+    "total_incidents": 66,
+    "bengaluru_metro_count": 58,
+    "delhi_ncr_count": 8,
+    "earliest_timestamp": "2026-11-07T11:27:04",
+    "latest_timestamp": "2026-11-07T17:09:04",
+    "temporal_span_hours": 5.7,
+    "temporal_span_days": 0.24,
+    "frequency_evaluated": "daily",
+    "periods_available": 0,
+    "minimum_periods_required": 30,
+    "is_sufficient": false,
+    "status": "DATA_INSUFFICIENT",
+    "decision_rationale": "Incident dataset spans 5.7 hours (0.24 days). Minimum requirement for daily forecasting is 30 continuous periods. The current operational dataset reflects a single 5.8-hour observation window on 2026-11-07. Training recurrent neural networks (BiLSTM) or ARIMA on single-day records produces severe hallucination without genuine temporal autocorrelation.",
+    "prohibition_policy": "CivicPulse AI strictly prohibits publishing forecast predictions or training ML models on synthetic seed demo records. Autonomous maintenance dispatch based on ungrounded forecasting is strictly prohibited."
+  },
+  "model_gated": "neural-forecaster-bilstm",
+  "prohibition_enforced": true
+}

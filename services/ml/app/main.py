@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import get_settings
 from app.api.health import router as health_router
 from app.api.models import router as models_router
+from app.api.inference import router as inference_router
 
 
 @asynccontextmanager
@@ -56,3 +57,5 @@ app.add_middleware(
 # Register routers
 app.include_router(health_router, tags=["Health"])
 app.include_router(models_router, prefix="/api/v1", tags=["Models"])
+app.include_router(inference_router, prefix="/api/v1", tags=["Inference"])
+app.include_router(inference_router, prefix="/api/v1/ml", tags=["Inference"])

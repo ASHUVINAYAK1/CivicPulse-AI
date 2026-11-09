@@ -1,0 +1,855 @@
+{
+  "resnet18_resnet18_best": {
+    "model_name": "resnet18",
+    "checkpoint": "resnet18_best.pt",
+    "num_test_samples": 1166,
+    "overall_metrics": {
+      "macro_f1": 0.4529,
+      "macro_precision": 0.497,
+      "macro_recall": 0.4178,
+      "micro_f1": 0.6379,
+      "micro_precision": 0.6996,
+      "micro_recall": 0.5863,
+      "weighted_f1": 0.6288,
+      "exact_match_ratio": 0.717,
+      "hamming_loss": 0.081,
+      "ece": 0.0295,
+      "brier_score": 0.0637
+    },
+    "binary_damage_detection": {
+      "accuracy": 0.8199,
+      "precision": 0.8064,
+      "recall": 0.6893,
+      "f1_score": 0.7433,
+      "tp": 304,
+      "fp": 73,
+      "fn": 137,
+      "tn": 652
+    },
+    "per_class_metrics": {
+      "D00": {
+        "name": "Longitudinal Crack",
+        "support": 162,
+        "tp": 74,
+        "fp": 47,
+        "fn": 88,
+        "tn": 957,
+        "confusion_matrix_2x2": {
+          "tn": 957,
+          "fp": 47,
+          "fn": 88,
+          "tp": 74
+        },
+        "precision": 0.6116,
+        "recall": 0.4568,
+        "f1_score": 0.523,
+        "specificity": 0.9532,
+        "max_prob_on_positive": 0.9975,
+        "mean_prob_on_positive": 0.4451
+      },
+      "D10": {
+        "name": "Transverse Crack",
+        "support": 6,
+        "tp": 0,
+        "fp": 0,
+        "fn": 6,
+        "tn": 1160,
+        "confusion_matrix_2x2": {
+          "tn": 1160,
+          "fp": 0,
+          "fn": 6,
+          "tp": 0
+        },
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "specificity": 1.0,
+        "max_prob_on_positive": 0.0639,
+        "mean_prob_on_positive": 0.0147
+      },
+      "D20": {
+        "name": "Alligator Crack",
+        "support": 251,
+        "tp": 192,
+        "fp": 44,
+        "fn": 59,
+        "tn": 871,
+        "confusion_matrix_2x2": {
+          "tn": 871,
+          "fp": 44,
+          "fn": 59,
+          "tp": 192
+        },
+        "precision": 0.8136,
+        "recall": 0.7649,
+        "f1_score": 0.7885,
+        "specificity": 0.9519,
+        "max_prob_on_positive": 0.9998,
+        "mean_prob_on_positive": 0.733
+      },
+      "D40": {
+        "name": "Pothole",
+        "support": 149,
+        "tp": 67,
+        "fp": 52,
+        "fn": 82,
+        "tn": 965,
+        "confusion_matrix_2x2": {
+          "tn": 965,
+          "fp": 52,
+          "fn": 82,
+          "tp": 67
+        },
+        "precision": 0.563,
+        "recall": 0.4497,
+        "f1_score": 0.5,
+        "specificity": 0.9489,
+        "max_prob_on_positive": 0.9998,
+        "mean_prob_on_positive": 0.4463
+      }
+    },
+    "d10_threshold_investigation": {
+      "d10_support_in_test": 6,
+      "d10_max_predicted_prob": 0.2506,
+      "d10_mean_predicted_prob": 0.008332,
+      "d10_prob_percentiles": {
+        "p50": 0.002865,
+        "p90": 0.016791,
+        "p99": 0.115295,
+        "max": 0.250642
+      },
+      "threshold_sweep": [
+        {
+          "threshold": 0.05,
+          "tp": 1,
+          "fp": 32,
+          "fn": 5,
+          "precision": 0.0303,
+          "recall": 0.1667,
+          "f1": 0.0513
+        },
+        {
+          "threshold": 0.1,
+          "tp": 0,
+          "fp": 15,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.15,
+          "tp": 0,
+          "fp": 7,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.2,
+          "tp": 0,
+          "fp": 2,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.25,
+          "tp": 0,
+          "fp": 1,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.3,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.35,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.4,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.45,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.5,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      ]
+    }
+  },
+  "efficientnet_b0_efficientnet_b0_best": {
+    "model_name": "efficientnet_b0",
+    "checkpoint": "efficientnet_b0_best.pt",
+    "num_test_samples": 1166,
+    "overall_metrics": {
+      "macro_f1": 0.4394,
+      "macro_precision": 0.4763,
+      "macro_recall": 0.4113,
+      "micro_f1": 0.6282,
+      "micro_precision": 0.6789,
+      "micro_recall": 0.5845,
+      "weighted_f1": 0.6169,
+      "exact_match_ratio": 0.705,
+      "hamming_loss": 0.0843,
+      "ece": 0.0286,
+      "brier_score": 0.0638
+    },
+    "binary_damage_detection": {
+      "accuracy": 0.8165,
+      "precision": 0.7873,
+      "recall": 0.7052,
+      "f1_score": 0.744,
+      "tp": 311,
+      "fp": 84,
+      "fn": 130,
+      "tn": 641
+    },
+    "per_class_metrics": {
+      "D00": {
+        "name": "Longitudinal Crack",
+        "support": 162,
+        "tp": 70,
+        "fp": 46,
+        "fn": 92,
+        "tn": 958,
+        "confusion_matrix_2x2": {
+          "tn": 958,
+          "fp": 46,
+          "fn": 92,
+          "tp": 70
+        },
+        "precision": 0.6034,
+        "recall": 0.4321,
+        "f1_score": 0.5036,
+        "specificity": 0.9542,
+        "max_prob_on_positive": 0.9977,
+        "mean_prob_on_positive": 0.4502
+      },
+      "D10": {
+        "name": "Transverse Crack",
+        "support": 6,
+        "tp": 0,
+        "fp": 0,
+        "fn": 6,
+        "tn": 1160,
+        "confusion_matrix_2x2": {
+          "tn": 1160,
+          "fp": 0,
+          "fn": 6,
+          "tp": 0
+        },
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "specificity": 1.0,
+        "max_prob_on_positive": 0.1208,
+        "mean_prob_on_positive": 0.0361
+      },
+      "D20": {
+        "name": "Alligator Crack",
+        "support": 251,
+        "tp": 200,
+        "fp": 47,
+        "fn": 51,
+        "tn": 868,
+        "confusion_matrix_2x2": {
+          "tn": 868,
+          "fp": 47,
+          "fn": 51,
+          "tp": 200
+        },
+        "precision": 0.8097,
+        "recall": 0.7968,
+        "f1_score": 0.8032,
+        "specificity": 0.9486,
+        "max_prob_on_positive": 0.9998,
+        "mean_prob_on_positive": 0.7581
+      },
+      "D40": {
+        "name": "Pothole",
+        "support": 149,
+        "tp": 62,
+        "fp": 64,
+        "fn": 87,
+        "tn": 953,
+        "confusion_matrix_2x2": {
+          "tn": 953,
+          "fp": 64,
+          "fn": 87,
+          "tp": 62
+        },
+        "precision": 0.4921,
+        "recall": 0.4161,
+        "f1_score": 0.4509,
+        "specificity": 0.9371,
+        "max_prob_on_positive": 0.9937,
+        "mean_prob_on_positive": 0.421
+      }
+    },
+    "d10_threshold_investigation": {
+      "d10_support_in_test": 6,
+      "d10_max_predicted_prob": 0.2759,
+      "d10_mean_predicted_prob": 0.00764,
+      "d10_prob_percentiles": {
+        "p50": 0.00313,
+        "p90": 0.017217,
+        "p99": 0.072691,
+        "max": 0.2759
+      },
+      "threshold_sweep": [
+        {
+          "threshold": 0.05,
+          "tp": 1,
+          "fp": 18,
+          "fn": 5,
+          "precision": 0.0526,
+          "recall": 0.1667,
+          "f1": 0.08
+        },
+        {
+          "threshold": 0.1,
+          "tp": 1,
+          "fp": 6,
+          "fn": 5,
+          "precision": 0.1429,
+          "recall": 0.1667,
+          "f1": 0.1538
+        },
+        {
+          "threshold": 0.15,
+          "tp": 0,
+          "fp": 3,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.2,
+          "tp": 0,
+          "fp": 2,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.25,
+          "tp": 0,
+          "fp": 2,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.3,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.35,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.4,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.45,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.5,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      ]
+    }
+  },
+  "mobilenet_v3_small_mobilenet_v3_small_best": {
+    "model_name": "mobilenet_v3_small",
+    "checkpoint": "mobilenet_v3_small_best.pt",
+    "num_test_samples": 1166,
+    "overall_metrics": {
+      "macro_f1": 0.3545,
+      "macro_precision": 0.4154,
+      "macro_recall": 0.3256,
+      "micro_f1": 0.5464,
+      "micro_precision": 0.6211,
+      "micro_recall": 0.4877,
+      "weighted_f1": 0.5137,
+      "exact_match_ratio": 0.6638,
+      "hamming_loss": 0.0986,
+      "ece": 0.0193,
+      "brier_score": 0.0713
+    },
+    "binary_damage_detection": {
+      "accuracy": 0.7839,
+      "precision": 0.7708,
+      "recall": 0.61,
+      "f1_score": 0.681,
+      "tp": 269,
+      "fp": 80,
+      "fn": 172,
+      "tn": 645
+    },
+    "per_class_metrics": {
+      "D00": {
+        "name": "Longitudinal Crack",
+        "support": 162,
+        "tp": 51,
+        "fp": 48,
+        "fn": 111,
+        "tn": 956,
+        "confusion_matrix_2x2": {
+          "tn": 956,
+          "fp": 48,
+          "fn": 111,
+          "tp": 51
+        },
+        "precision": 0.5152,
+        "recall": 0.3148,
+        "f1_score": 0.3908,
+        "specificity": 0.9522,
+        "max_prob_on_positive": 0.8964,
+        "mean_prob_on_positive": 0.3712
+      },
+      "D10": {
+        "name": "Transverse Crack",
+        "support": 6,
+        "tp": 0,
+        "fp": 0,
+        "fn": 6,
+        "tn": 1160,
+        "confusion_matrix_2x2": {
+          "tn": 1160,
+          "fp": 0,
+          "fn": 6,
+          "tp": 0
+        },
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "specificity": 1.0,
+        "max_prob_on_positive": 0.0506,
+        "mean_prob_on_positive": 0.02
+      },
+      "D20": {
+        "name": "Alligator Crack",
+        "support": 251,
+        "tp": 194,
+        "fp": 80,
+        "fn": 57,
+        "tn": 835,
+        "confusion_matrix_2x2": {
+          "tn": 835,
+          "fp": 80,
+          "fn": 57,
+          "tp": 194
+        },
+        "precision": 0.708,
+        "recall": 0.7729,
+        "f1_score": 0.739,
+        "specificity": 0.9126,
+        "max_prob_on_positive": 0.999,
+        "mean_prob_on_positive": 0.7188
+      },
+      "D40": {
+        "name": "Pothole",
+        "support": 149,
+        "tp": 32,
+        "fp": 41,
+        "fn": 117,
+        "tn": 976,
+        "confusion_matrix_2x2": {
+          "tn": 976,
+          "fp": 41,
+          "fn": 117,
+          "tp": 32
+        },
+        "precision": 0.4384,
+        "recall": 0.2148,
+        "f1_score": 0.2883,
+        "specificity": 0.9597,
+        "max_prob_on_positive": 0.8132,
+        "mean_prob_on_positive": 0.3102
+      }
+    },
+    "d10_threshold_investigation": {
+      "d10_support_in_test": 6,
+      "d10_max_predicted_prob": 0.1723,
+      "d10_mean_predicted_prob": 0.009872,
+      "d10_prob_percentiles": {
+        "p50": 0.003071,
+        "p90": 0.025006,
+        "p99": 0.10984,
+        "max": 0.172343
+      },
+      "threshold_sweep": [
+        {
+          "threshold": 0.05,
+          "tp": 1,
+          "fp": 50,
+          "fn": 5,
+          "precision": 0.0196,
+          "recall": 0.1667,
+          "f1": 0.0351
+        },
+        {
+          "threshold": 0.1,
+          "tp": 0,
+          "fp": 14,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.15,
+          "tp": 0,
+          "fp": 2,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.2,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.25,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.3,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.35,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.4,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.45,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.5,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      ]
+    }
+  },
+  "resnet18_production_model": {
+    "model_name": "resnet18",
+    "checkpoint": "production_model.pt",
+    "num_test_samples": 1166,
+    "overall_metrics": {
+      "macro_f1": 0.4529,
+      "macro_precision": 0.497,
+      "macro_recall": 0.4178,
+      "micro_f1": 0.6379,
+      "micro_precision": 0.6996,
+      "micro_recall": 0.5863,
+      "weighted_f1": 0.6288,
+      "exact_match_ratio": 0.717,
+      "hamming_loss": 0.081,
+      "ece": 0.0295,
+      "brier_score": 0.0637
+    },
+    "binary_damage_detection": {
+      "accuracy": 0.8199,
+      "precision": 0.8064,
+      "recall": 0.6893,
+      "f1_score": 0.7433,
+      "tp": 304,
+      "fp": 73,
+      "fn": 137,
+      "tn": 652
+    },
+    "per_class_metrics": {
+      "D00": {
+        "name": "Longitudinal Crack",
+        "support": 162,
+        "tp": 74,
+        "fp": 47,
+        "fn": 88,
+        "tn": 957,
+        "confusion_matrix_2x2": {
+          "tn": 957,
+          "fp": 47,
+          "fn": 88,
+          "tp": 74
+        },
+        "precision": 0.6116,
+        "recall": 0.4568,
+        "f1_score": 0.523,
+        "specificity": 0.9532,
+        "max_prob_on_positive": 0.9975,
+        "mean_prob_on_positive": 0.4451
+      },
+      "D10": {
+        "name": "Transverse Crack",
+        "support": 6,
+        "tp": 0,
+        "fp": 0,
+        "fn": 6,
+        "tn": 1160,
+        "confusion_matrix_2x2": {
+          "tn": 1160,
+          "fp": 0,
+          "fn": 6,
+          "tp": 0
+        },
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "specificity": 1.0,
+        "max_prob_on_positive": 0.0639,
+        "mean_prob_on_positive": 0.0147
+      },
+      "D20": {
+        "name": "Alligator Crack",
+        "support": 251,
+        "tp": 192,
+        "fp": 44,
+        "fn": 59,
+        "tn": 871,
+        "confusion_matrix_2x2": {
+          "tn": 871,
+          "fp": 44,
+          "fn": 59,
+          "tp": 192
+        },
+        "precision": 0.8136,
+        "recall": 0.7649,
+        "f1_score": 0.7885,
+        "specificity": 0.9519,
+        "max_prob_on_positive": 0.9998,
+        "mean_prob_on_positive": 0.733
+      },
+      "D40": {
+        "name": "Pothole",
+        "support": 149,
+        "tp": 67,
+        "fp": 52,
+        "fn": 82,
+        "tn": 965,
+        "confusion_matrix_2x2": {
+          "tn": 965,
+          "fp": 52,
+          "fn": 82,
+          "tp": 67
+        },
+        "precision": 0.563,
+        "recall": 0.4497,
+        "f1_score": 0.5,
+        "specificity": 0.9489,
+        "max_prob_on_positive": 0.9998,
+        "mean_prob_on_positive": 0.4463
+      }
+    },
+    "d10_threshold_investigation": {
+      "d10_support_in_test": 6,
+      "d10_max_predicted_prob": 0.2506,
+      "d10_mean_predicted_prob": 0.008332,
+      "d10_prob_percentiles": {
+        "p50": 0.002865,
+        "p90": 0.016791,
+        "p99": 0.115295,
+        "max": 0.250642
+      },
+      "threshold_sweep": [
+        {
+          "threshold": 0.05,
+          "tp": 1,
+          "fp": 32,
+          "fn": 5,
+          "precision": 0.0303,
+          "recall": 0.1667,
+          "f1": 0.0513
+        },
+        {
+          "threshold": 0.1,
+          "tp": 0,
+          "fp": 15,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.15,
+          "tp": 0,
+          "fp": 7,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.2,
+          "tp": 0,
+          "fp": 2,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.25,
+          "tp": 0,
+          "fp": 1,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.3,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.35,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.4,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.45,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "threshold": 0.5,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      ]
+    }
+  },
+  "production_identity_verified": true
+}

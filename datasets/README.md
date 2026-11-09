@@ -38,3 +38,4 @@ datasets/
 1. **Never commit raw images or model checkpoints to Git**: Controlled by root `.gitignore`.
 2. **Pre-split before feature normalization**: Group splitting by inspection session/road stretch prevents spatial leakage between training and testing sets.
 3. **Synthetic separation**: Any synthetically generated incident or repair record is stored in `datasets/synthetic/` with an explicit `is_synthetic: true` field.
+

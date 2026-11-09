@@ -1,0 +1,165 @@
+{
+  "candidate_model": "resnet18_clean_grouped_v2",
+  "checkpoint_path": "services\\ml\\model_artifacts\\resnet18_clean_grouped_v2_best.pt",
+  "sha256": "cc504bb3551175437a9f3cf9d7d86af19514a5b07a8ce7b9109f5d7f2316d855",
+  "evaluated_dataset": "datasets/splits/rdd2022_india_grouped_v2/test",
+  "test_sample_count": 1047,
+  "training_overlap_with_test": 0,
+  "training_overlap_percentage": 0.0,
+  "overall_metrics": {
+    "macro_f1": 0.532,
+    "macro_precision": 0.6136,
+    "macro_recall": 0.5071,
+    "micro_f1": 0.6575,
+    "micro_precision": 0.6704,
+    "micro_recall": 0.645,
+    "weighted_f1": 0.6565,
+    "exact_match_ratio": 0.7001,
+    "hamming_loss": 0.0891,
+    "expected_calibration_error_ece": 0.0556,
+    "brier_score": 0.0716,
+    "avg_latency_ms": 0.74,
+    "p95_latency_ms": 1.37
+  },
+  "binary_damage_metrics": {
+    "accuracy": 0.8262,
+    "precision": 0.8259,
+    "recall": 0.7477,
+    "f1_score": 0.7849,
+    "confusion_matrix": {
+      "tn": 533,
+      "fp": 70,
+      "fn": 112,
+      "tp": 332
+    }
+  },
+  "per_class_metrics": {
+    "D00": {
+      "name": "Longitudinal Crack",
+      "support": 149,
+      "tp": 83,
+      "fp": 69,
+      "fn": 66,
+      "tn": 829,
+      "confusion_matrix_2x2": {
+        "tn": 829,
+        "fp": 69,
+        "fn": 66,
+        "tp": 83
+      },
+      "precision": 0.5461,
+      "recall": 0.557,
+      "f1_score": 0.5515,
+      "specificity": 0.9232,
+      "mean_prob_on_positive": 0.5421,
+      "max_prob_on_positive": 1.0
+    },
+    "D10": {
+      "name": "Transverse Crack",
+      "support": 8,
+      "tp": 1,
+      "fp": 1,
+      "fn": 7,
+      "tn": 1038,
+      "confusion_matrix_2x2": {
+        "tn": 1038,
+        "fp": 1,
+        "fn": 7,
+        "tp": 1
+      },
+      "precision": 0.5,
+      "recall": 0.125,
+      "f1_score": 0.2,
+      "specificity": 0.999,
+      "mean_prob_on_positive": 0.1397,
+      "max_prob_on_positive": 0.8038
+    },
+    "D20": {
+      "name": "Alligator Crack",
+      "support": 239,
+      "tp": 179,
+      "fp": 46,
+      "fn": 60,
+      "tn": 762,
+      "confusion_matrix_2x2": {
+        "tn": 762,
+        "fp": 46,
+        "fn": 60,
+        "tp": 179
+      },
+      "precision": 0.7956,
+      "recall": 0.749,
+      "f1_score": 0.7716,
+      "specificity": 0.9431,
+      "mean_prob_on_positive": 0.7451,
+      "max_prob_on_positive": 1.0
+    },
+    "D40": {
+      "name": "Pothole",
+      "support": 159,
+      "tp": 95,
+      "fp": 60,
+      "fn": 64,
+      "tn": 828,
+      "confusion_matrix_2x2": {
+        "tn": 828,
+        "fp": 60,
+        "fn": 64,
+        "tp": 95
+      },
+      "precision": 0.6129,
+      "recall": 0.5975,
+      "f1_score": 0.6051,
+      "specificity": 0.9324,
+      "mean_prob_on_positive": 0.5834,
+      "max_prob_on_positive": 0.9999
+    }
+  },
+  "comparative_benchmarks": {
+    "historical_resnet18_random_split": {
+      "macro_f1": 0.4529,
+      "micro_f1": 0.6379,
+      "weighted_f1": 0.6288,
+      "binary_acc": 0.8199,
+      "binary_f1": 0.7433,
+      "exact_match": 0.717,
+      "ece": 0.0295,
+      "brier": 0.0637,
+      "d00_f1": 0.523,
+      "d10_f1": 0.0,
+      "d20_f1": 0.7885,
+      "d40_f1": 0.5
+    },
+    "historical_resnet18_grouped_split_with_72_7pct_overlap": {
+      "macro_f1": 0.764,
+      "micro_f1": 0.8883,
+      "weighted_f1": 0.8848,
+      "binary_acc": 0.9379,
+      "binary_f1": 0.9252,
+      "exact_match": 0.8997,
+      "ece": 0.0109,
+      "brier": 0.0235,
+      "d00_f1": 0.8797,
+      "d10_f1": 0.4,
+      "d20_f1": 0.9295,
+      "d40_f1": 0.8467,
+      "training_overlap_percentage": 72.7,
+      "overlap_samples": 761,
+      "total_samples": 1047
+    },
+    "clean_resnet18_grouped_v2_zero_overlap": {
+      "macro_f1": 0.532,
+      "micro_f1": 0.6575,
+      "weighted_f1": 0.6565,
+      "binary_acc": 0.8262,
+      "binary_f1": 0.7849,
+      "exact_match": 0.7001,
+      "ece": 0.0556,
+      "brier": 0.0716,
+      "d00_f1": 0.5515,
+      "d10_f1": 0.2,
+      "d20_f1": 0.7716,
+      "d40_f1": 0.6051
+    }
+  }
+}

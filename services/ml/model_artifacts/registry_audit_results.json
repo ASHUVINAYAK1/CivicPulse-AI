@@ -1,0 +1,194 @@
+{
+  "on_disk_checkpoints": {
+    "detector_fasterrcnn_mobilenetv3_best.pt": {
+      "size_bytes": 76071969,
+      "size_mb": 72.55,
+      "sha256": "3874986db18546a52022d3d70e6ebe55406a01bc4d38aad158548945ecee28c2"
+    },
+    "detector_ssdlite320_best.pt": {
+      "size_bytes": 15384393,
+      "size_mb": 14.67,
+      "sha256": "10883f0d06a1d44d0c9c7e1fa6a74e1cb7faf66a88fbc65d157c7ca6c6ddbf4a"
+    },
+    "detector_ssdlite320_v2_best.pt": {
+      "size_bytes": 9281263,
+      "size_mb": 8.85,
+      "sha256": "48911c0e47183ff240410c187fe0565f0db2726aa074213dc2853128a5e580b5"
+    },
+    "efficientnet_b0_best.pt": {
+      "size_bytes": 16358725,
+      "size_mb": 15.6,
+      "sha256": "1d24d1b9560901a5f41df5b183ca9ec7e17afe4b5a40f4867dc28a29dbe48d52"
+    },
+    "mobilenet_v3_small_best.pt": {
+      "size_bytes": 6229111,
+      "size_mb": 5.94,
+      "sha256": "78304ba597fdeb4d17ada1b15c446c11f50c10847ce91f2d0f40207e5ef9c1b9"
+    },
+    "production_model.pt": {
+      "size_bytes": 44796107,
+      "size_mb": 42.72,
+      "sha256": "4a912380869873840fac09eb0aec3de9fd73334271104399e846398b7d0c7acf"
+    },
+    "resnet18_best.pt": {
+      "size_bytes": 44796107,
+      "size_mb": 42.72,
+      "sha256": "4a912380869873840fac09eb0aec3de9fd73334271104399e846398b7d0c7acf"
+    },
+    "resnet18_clean_grouped_v2_best.pt": {
+      "size_bytes": 44793611,
+      "size_mb": 42.72,
+      "sha256": "cc504bb3551175437a9f3cf9d7d86af19514a5b07a8ce7b9109f5d7f2316d855"
+    }
+  },
+  "production_equals_resnet18": true,
+  "mlflow_audit": {
+    "database_exists": true,
+    "runs": [
+      {
+        "run_id": "0d51c7b3d12347378f9fa27c80c27136",
+        "name": "clean_resnet18_grouped_v2_training",
+        "status": "FINISHED",
+        "duration_sec": 839.9,
+        "params": {
+          "model_architecture": "resnet18",
+          "dataset_split": "rdd2022_india_grouped_v2",
+          "train_samples": "5309",
+          "val_samples": "1160",
+          "epochs": "15",
+          "batch_size": "64",
+          "initial_lr": "0.0003",
+          "weight_decay": "0.0001",
+          "early_stopping_patience": "4",
+          "param_count": "11178564",
+          "pos_weight_d00": "3.636361060408885",
+          "pos_weight_d10": "12.0",
+          "pos_weight_d20": "2.746122452584765",
+          "pos_weight_d40": "3.7808289554048464",
+          "criterion": "BCEWithLogitsLoss_SquareRootDampedPosWeight",
+          "checkpoint_target": "services\\ml\\model_artifacts\\resnet18_clean_grouped_v2_best.pt"
+        },
+        "metrics": {
+          "train_loss": 0.0053823307454519366,
+          "val_loss": 0.8056578200438927,
+          "val_macro_f1": 0.5075,
+          "val_micro_f1": 0.6418,
+          "val_weighted_f1": 0.6344,
+          "val_binary_acc": 0.8216,
+          "val_binary_f1": 0.7585,
+          "val_d00_f1": 0.5069,
+          "val_d10_f1": 0.2,
+          "val_d20_f1": 0.7675,
+          "val_d40_f1": 0.5556,
+          "best_epoch": 12.0,
+          "best_val_macro_f1": 0.5093,
+          "total_train_time_sec": 840.1
+        }
+      },
+      {
+        "run_id": "61e085a0b2cf427ba6dc5b4f2856815b",
+        "name": "detection_ssdlite320_mobilenet_v3_large",
+        "status": "FINISHED",
+        "duration_sec": 72.7,
+        "params": {
+          "architecture": "ssdlite320_mobilenet_v3_large"
+        },
+        "metrics": {
+          "train_time_sec": 71.8,
+          "latency_ms": 10.01,
+          "final_loss": 5.4974
+        }
+      },
+      {
+        "run_id": "8699733daf3d4a1b9d49530957b14e61",
+        "name": "transfer_learning_efficientnet_b0",
+        "status": "FINISHED",
+        "duration_sec": 295.6,
+        "params": {
+          "backbone": "efficientnet_b0",
+          "epochs": "5",
+          "batch_size": "64",
+          "lr": "0.0003",
+          "param_count": "4012672"
+        },
+        "metrics": {
+          "train_time_sec": 284.5,
+          "latency_ms": 0.94,
+          "vram_peak_mb": 5491.9,
+          "val_macro_f1": 0.4348,
+          "test_macro_f1": 0.4394,
+          "test_exact_match": 0.705,
+          "test_binary_acc": 0.8165,
+          "d40_pothole_f1": 0.4509,
+          "d20_alligator_f1": 0.8032,
+          "d00_longitudinal_f1": 0.5036,
+          "d10_transverse_f1": 0.0
+        }
+      },
+      {
+        "run_id": "06db6fe934f64d2b88619b732781214b",
+        "name": "transfer_learning_resnet18",
+        "status": "FINISHED",
+        "duration_sec": 285.3,
+        "params": {
+          "backbone": "resnet18",
+          "epochs": "5",
+          "batch_size": "64",
+          "lr": "0.0003",
+          "param_count": "11178564"
+        },
+        "metrics": {
+          "train_time_sec": 272.2,
+          "latency_ms": 0.66,
+          "vram_peak_mb": 1586.0,
+          "val_macro_f1": 0.4599,
+          "test_macro_f1": 0.4529,
+          "test_exact_match": 0.717,
+          "test_binary_acc": 0.8199,
+          "d40_pothole_f1": 0.5,
+          "d20_alligator_f1": 0.7885,
+          "d00_longitudinal_f1": 0.523,
+          "d10_transverse_f1": 0.0
+        }
+      },
+      {
+        "run_id": "6693538f8f61491094582ffbd3258eec",
+        "name": "transfer_learning_mobilenet_v3_small",
+        "status": "FINISHED",
+        "duration_sec": 296.7,
+        "params": {
+          "backbone": "mobilenet_v3_small",
+          "epochs": "5",
+          "batch_size": "64",
+          "lr": "0.0003",
+          "param_count": "1521956"
+        },
+        "metrics": {
+          "train_time_sec": 281.2,
+          "latency_ms": 0.48,
+          "vram_peak_mb": 1056.7,
+          "val_macro_f1": 0.3852,
+          "test_macro_f1": 0.3545,
+          "test_exact_match": 0.6638,
+          "test_binary_acc": 0.7839,
+          "d40_pothole_f1": 0.2883,
+          "d20_alligator_f1": 0.739,
+          "d00_longitudinal_f1": 0.3908,
+          "d10_transverse_f1": 0.0
+        }
+      }
+    ],
+    "experiments": [
+      {
+        "id": 0,
+        "name": "Default",
+        "artifact_location": "file:///C:/Users/Admin/Desktop/my-projects/CivicPulse-AI/mlruns/0"
+      },
+      {
+        "id": 1,
+        "name": "civicpulse-road-damage-intelligence",
+        "artifact_location": "file:///C:/Users/Admin/Desktop/my-projects/CivicPulse-AI/mlruns/1"
+      }
+    ]
+  }
+}

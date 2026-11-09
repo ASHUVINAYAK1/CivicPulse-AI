@@ -1,20 +1,37 @@
+# ==========================================
+# CivicPulse-AI - Git Ignore Configuration
+# ==========================================
+
 # Dependencies
 node_modules/
 .pnp
 .pnp.js
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
 # Build outputs
 dist/
 build/
 .next/
 out/
+.turbo/
+*.tsbuildinfo
 
-# Environment
+# Environment & Secrets (keep example templates)
 .env
+.env.*
 .env.local
 .env.*.local
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
 
-# Python
+# Python & Virtual Environments
 __pycache__/
 *.py[cod]
 *$py.class
@@ -23,59 +40,89 @@ __pycache__/
 env/
 venv/
 .venv/
+ENV/
 *.egg-info/
 *.egg
 .eggs/
 
-# ML artifacts
+# Testing, Type Checking & Linting Caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+coverage/
+.coverage
+.coverage.*
+htmlcov/
+.nyc_output/
+
+# Machine Learning Checkpoints & Weights
+# (Prevents large binary weights from bloating Git history)
+*.pt
+*.pth
 *.h5
 *.hdf5
 *.pkl
 *.joblib
-*.pt
-*.pth
 *.onnx
 *.tflite
 *.pb
+*.safetensors
+*.bin
+*.weights
+*.ckpt
+*.torchscript
+*.engine
+
+# Experiment Tracking & MLflow
 mlruns/
 mlartifacts/
+.mlflow/
 
-# Datasets (keep structure, ignore data)
+# Local Databases & State Stores
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite
+*.sqlite3
+mlflow.db
+
+# Datasets (Preserve folder structure via .gitkeep, ignore actual dataset files)
 datasets/raw/*
 datasets/processed/*
 datasets/annotations/*
 datasets/synthetic/*
+datasets/splits/*
 !datasets/**/.gitkeep
 
-# IDE
+# IDEs & Editors
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
+*.code-workspace
 
-# OS
+# Operating System Files
 .DS_Store
+.DS_Store?
+._*
 Thumbs.db
 desktop.ini
 
-# Docker
-docker-compose.override.yml
-
-# Logs
+# Logs & Temporary Files
 *.log
 logs/
-
-# Coverage
-coverage/
-.coverage
-htmlcov/
-.nyc_output/
-
-# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.cache/
 *.tgz
 *.tar.gz
-.cache/
 
-# Jupyter
+# Jupyter Notebook Checkpoints
 .ipynb_checkpoints/
+
+# Docker overrides
+docker-compose.override.yml

@@ -1,0 +1,21 @@
+{
+  "success": false,
+  "status": "DATA_INSUFFICIENT",
+  "message": "Supervised model training aborted: Insufficient verified ground-truth labels.",
+  "audit": {
+    "total_verified_samples": 6,
+    "threshold_required": 50,
+    "is_sufficient": false,
+    "class_distribution": {
+      "critical": 3,
+      "high": 1,
+      "medium": 1,
+      "low": 1
+    },
+    "status": "DATA_INSUFFICIENT",
+    "decision_rationale": "Ground-truth verification count N=6 is below the statistical threshold (N>=50) required for generalizable supervised multi-class learning. Training on N=6 would cause severe overfitting, memorization of single inspector cases, and invalid evaluation metrics."
+  },
+  "models_evaluated": [],
+  "metrics": null,
+  "governance_enforcement": "In accordance with CivicPulse AI Phase 3 Governance, automated rules and CV proxy labels are NOT permitted to serve as training targets. Awaiting field inspector verification volume."
+}

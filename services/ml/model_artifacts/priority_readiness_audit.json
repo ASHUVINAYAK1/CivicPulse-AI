@@ -1,0 +1,16 @@
+{
+  "success": false,
+  "status": "DATA_INSUFFICIENT",
+  "message": "Supervised priority training aborted: Insufficient completed maintenance outcomes.",
+  "audit": {
+    "total_maintenance_tasks": 2,
+    "total_completed_repairs": 0,
+    "total_admin_reviews": 0,
+    "threshold_required": 50,
+    "is_sufficient": false,
+    "status": "DATA_INSUFFICIENT",
+    "decision_rationale": "Completed repair count N=0 is below the statistical threshold (N>=50) required for supervised priority modeling. The database contains only 2 maintenance tasks and 0 completed repairs. Training a priority classifier on heuristic priority scores would create a circular proxy with no independent validation.",
+    "prohibition_policy": "CivicPulse AI strictly prohibits training ML priority models on rule-engine scores or synthetic data and claiming validated predictive performance."
+  },
+  "recommended_action": "Continue operating the explainable heuristic priority scoring engine as an administrative decision-support tool."
+}

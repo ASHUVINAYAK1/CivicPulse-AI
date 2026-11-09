@@ -1,0 +1,189 @@
+{
+  "architecture": "ssdlite320_mobilenet_v3_large",
+  "checkpoint": "detector_ssdlite320_best.pt",
+  "num_test_images": 1166,
+  "total_gt_boxes": 723,
+  "gt_boxes_per_class": {
+    "D00": 229,
+    "D10": 7,
+    "D20": 286,
+    "D40": 201
+  },
+  "mAP_50": 0.0898,
+  "mAP_50_95": 0.0285,
+  "per_class_ap_50": {
+    "D00": 0.0047,
+    "D10": 0.0,
+    "D20": 0.336,
+    "D40": 0.0185
+  },
+  "per_class_ap_coco": {
+    "D00": 0.0009,
+    "D10": 0.0,
+    "D20": 0.109,
+    "D40": 0.0041
+  },
+  "per_class_details_05": {
+    "D00": {
+      "support_gt": 229,
+      "total_detections": 158904,
+      "tp_at_05": 115,
+      "fp_at_05": 158789,
+      "ap_50": 0.0047,
+      "precision_50": 0.0007,
+      "recall_50": 0.5022
+    },
+    "D10": {
+      "support_gt": 7,
+      "total_detections": 2061,
+      "tp_at_05": 0,
+      "fp_at_05": 2061,
+      "ap_50": 0.0,
+      "precision_50": 0.0,
+      "recall_50": 0.0
+    },
+    "D20": {
+      "support_gt": 286,
+      "total_detections": 101526,
+      "tp_at_05": 255,
+      "fp_at_05": 101271,
+      "ap_50": 0.336,
+      "precision_50": 0.0025,
+      "recall_50": 0.8916
+    },
+    "D40": {
+      "support_gt": 201,
+      "total_detections": 87309,
+      "tp_at_05": 61,
+      "fp_at_05": 87248,
+      "ap_50": 0.0185,
+      "precision_50": 0.0007,
+      "recall_50": 0.3035
+    }
+  },
+  "mean_iou_on_true_positives": 0.6262,
+  "false_positive_cases": [
+    {
+      "image_id": "India_008136",
+      "class": "D00",
+      "confidence": 0.2581,
+      "box_norm": [
+        0.0809,
+        0.0,
+        0.4202,
+        0.3325
+      ],
+      "best_iou_with_any_gt": 0.0,
+      "reason": "IoU below threshold with ground truth or background false alarm"
+    },
+    {
+      "image_id": "India_008707",
+      "class": "D00",
+      "confidence": 0.2465,
+      "box_norm": [
+        0.5562,
+        0.5418,
+        0.7424,
+        1.0
+      ],
+      "best_iou_with_any_gt": 0.0,
+      "reason": "IoU below threshold with ground truth or background false alarm"
+    },
+    {
+      "image_id": "India_006522",
+      "class": "D00",
+      "confidence": 0.2383,
+      "box_norm": [
+        0.2107,
+        0.6,
+        0.4831,
+        0.946
+      ],
+      "best_iou_with_any_gt": 0.0,
+      "reason": "IoU below threshold with ground truth or background false alarm"
+    },
+    {
+      "image_id": "India_001135",
+      "class": "D00",
+      "confidence": 0.2323,
+      "box_norm": [
+        0.3532,
+        0.0,
+        0.5471,
+        0.3623
+      ],
+      "best_iou_with_any_gt": 0.0,
+      "reason": "IoU below threshold with ground truth or background false alarm"
+    },
+    {
+      "image_id": "India_007871",
+      "class": "D00",
+      "confidence": 0.2313,
+      "box_norm": [
+        0.0,
+        0.0,
+        0.3843,
+        0.3317
+      ],
+      "best_iou_with_any_gt": 0.0,
+      "reason": "IoU below threshold with ground truth or background false alarm"
+    }
+  ],
+  "false_negative_cases": [
+    {
+      "image_id": "India_000038",
+      "class": "D00",
+      "box_norm": [
+        0.525,
+        0.7667,
+        0.6139,
+        0.8597
+      ],
+      "reason": "Detector missed defect entirely or confidence was suppressed below threshold"
+    },
+    {
+      "image_id": "India_000053",
+      "class": "D00",
+      "box_norm": [
+        0.7972,
+        0.8375,
+        0.8833,
+        0.875
+      ],
+      "reason": "Detector missed defect entirely or confidence was suppressed below threshold"
+    },
+    {
+      "image_id": "India_000368",
+      "class": "D00",
+      "box_norm": [
+        0.5375,
+        0.6708,
+        0.6083,
+        0.7903
+      ],
+      "reason": "Detector missed defect entirely or confidence was suppressed below threshold"
+    },
+    {
+      "image_id": "India_000368",
+      "class": "D00",
+      "box_norm": [
+        0.6431,
+        0.6194,
+        0.7625,
+        0.7444
+      ],
+      "reason": "Detector missed defect entirely or confidence was suppressed below threshold"
+    },
+    {
+      "image_id": "India_000446",
+      "class": "D00",
+      "box_norm": [
+        0.5653,
+        0.5153,
+        0.6083,
+        0.7667
+      ],
+      "reason": "Detector missed defect entirely or confidence was suppressed below threshold"
+    }
+  ]
+}

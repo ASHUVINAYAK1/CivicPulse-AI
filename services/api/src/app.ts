@@ -5,6 +5,11 @@ import { env } from './config';
 import { notFoundHandler, errorHandler } from './middleware';
 import healthRoutes from './routes/health';
 
+// Global BigInt JSON serialization guard
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
+
 // Module routes
 import { routes as authRoutes } from './modules/auth';
 import { routes as userRoutes } from './modules/users';
@@ -13,6 +18,12 @@ import { routes as imageRoutes } from './modules/images';
 import { routes as maintenanceRoutes } from './modules/maintenance';
 import { routes as analyticsRoutes } from './modules/analytics';
 import { routes as mlRoutes } from './modules/ml';
+import { routes as deduplicationRoutes } from './modules/deduplication';
+import { routes as hotspotRoutes } from './modules/hotspots';
+import { routes as severityRoutes } from './modules/severity';
+import { maintenancePriorityRoutes } from './modules/maintenance-priority';
+import { repairEstimationRoutes } from './modules/repair-estimation';
+import { forecastRoutes } from './modules/forecasting';
 
 export function createApp(): Application {
   const app = express();
@@ -42,6 +53,12 @@ export function createApp(): Application {
   app.use(apiV1, maintenanceRoutes);
   app.use(apiV1, analyticsRoutes);
   app.use(apiV1, mlRoutes);
+  app.use(apiV1, deduplicationRoutes);
+  app.use(apiV1, hotspotRoutes);
+  app.use(apiV1, severityRoutes);
+  app.use(`${apiV1}/maintenance-priority`, maintenancePriorityRoutes);
+  app.use(`${apiV1}/repair-estimates`, repairEstimationRoutes);
+  app.use(`${apiV1}/forecasts`, forecastRoutes);
 
   // ---- Error handling ----
   app.use(notFoundHandler);

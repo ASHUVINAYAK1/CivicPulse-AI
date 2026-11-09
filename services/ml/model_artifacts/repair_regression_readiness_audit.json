@@ -1,0 +1,14 @@
+{
+  "success": false,
+  "status": "DATA_INSUFFICIENT",
+  "message": "Supervised regression training aborted: Insufficient completed repair ground truth.",
+  "audit": {
+    "total_completed_repairs_with_actuals": 0,
+    "threshold_required": 50,
+    "is_sufficient": false,
+    "status": "DATA_INSUFFICIENT",
+    "decision_rationale": "Completed repair count with empirical cost and duration ground truth is N=0. Minimum statistical requirement is N>=50. Training Linear Regression, Random Forest, or Gradient Boosting on parametric formula outputs or synthetic data would produce circular self-prediction without empirical operational validity.",
+    "prohibition_policy": "CivicPulse AI strictly prohibits reporting MAE, RMSE, or R2 metrics without genuine held-out completed municipal expenditures."
+  },
+  "recommended_action": "Continue utilizing transparent regional parametric cost and duration estimation formulas until field maintenance crews log at least 50 completed work orders with verified actual expenditures."
+}

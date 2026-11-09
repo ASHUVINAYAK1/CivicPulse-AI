@@ -36,7 +36,7 @@ const envSchema = z.object({
   MINIO_ROOT_USER: z.string().default('civicpulse_minio'),
   MINIO_ROOT_PASSWORD: z.string().optional(),
   MINIO_BUCKET: z.string().default('civicpulse-images'),
-  MINIO_USE_SSL: z.coerce.boolean().default(false),
+  MINIO_USE_SSL: z.preprocess((val) => val === 'true' || val === true, z.boolean()).default(false),
 
   // ML Service
   ML_SERVICE_URL: z.string().url().default('http://localhost:8000'),
